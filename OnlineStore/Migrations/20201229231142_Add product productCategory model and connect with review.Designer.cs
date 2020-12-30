@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineStore.Data;
 
 namespace OnlineStore.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201229231142_Add product productCategory model and connect with review")]
+    partial class AddproductproductCategorymodelandconnectwithreview
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,85 +59,9 @@ namespace OnlineStore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<bool>("Ordered")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Carts");
-                });
-
-            modelBuilder.Entity("OnlineStore.Data.CartItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CartId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Count")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CartId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("CartItems");
-                });
-
-            modelBuilder.Entity("OnlineStore.Data.Invoice", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("InvoiceNumber")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<int?>("OrderId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
-
-                    b.ToTable("Invoices");
-                });
-
-            modelBuilder.Entity("OnlineStore.Data.Order", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CartId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("Status")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CartId");
-
-                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("OnlineStore.Data.Product", b =>
@@ -151,9 +77,6 @@ namespace OnlineStore.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<string>("ImgUrl")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("Name")
@@ -172,7 +95,7 @@ namespace OnlineStore.Migrations
 
                     b.HasIndex("ProductCategoryId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Product");
                 });
 
             modelBuilder.Entity("OnlineStore.Data.ProductCategory", b =>
@@ -189,7 +112,7 @@ namespace OnlineStore.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductsCategories");
+                    b.ToTable("ProductCategory");
                 });
 
             modelBuilder.Entity("OnlineStore.Data.Review", b =>
@@ -254,52 +177,10 @@ namespace OnlineStore.Migrations
             modelBuilder.Entity("OnlineStore.Data.Address", b =>
                 {
                     b.HasOne("OnlineStore.Data.User", "User")
-                        .WithMany("Addresses")
+                        .WithMany("Address")
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("OnlineStore.Data.Cart", b =>
-                {
-                    b.HasOne("OnlineStore.Data.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("OnlineStore.Data.CartItem", b =>
-                {
-                    b.HasOne("OnlineStore.Data.Cart", "Cart")
-                        .WithMany("CartItems")
-                        .HasForeignKey("CartId");
-
-                    b.HasOne("OnlineStore.Data.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId");
-
-                    b.Navigation("Cart");
-
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("OnlineStore.Data.Invoice", b =>
-                {
-                    b.HasOne("OnlineStore.Data.Order", "Order")
-                        .WithMany()
-                        .HasForeignKey("OrderId");
-
-                    b.Navigation("Order");
-                });
-
-            modelBuilder.Entity("OnlineStore.Data.Order", b =>
-                {
-                    b.HasOne("OnlineStore.Data.Cart", "Cart")
-                        .WithMany()
-                        .HasForeignKey("CartId");
-
-                    b.Navigation("Cart");
                 });
 
             modelBuilder.Entity("OnlineStore.Data.Product", b =>
@@ -326,11 +207,6 @@ namespace OnlineStore.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("OnlineStore.Data.Cart", b =>
-                {
-                    b.Navigation("CartItems");
-                });
-
             modelBuilder.Entity("OnlineStore.Data.ProductCategory", b =>
                 {
                     b.Navigation("Products");
@@ -338,7 +214,7 @@ namespace OnlineStore.Migrations
 
             modelBuilder.Entity("OnlineStore.Data.User", b =>
                 {
-                    b.Navigation("Addresses");
+                    b.Navigation("Address");
 
                     b.Navigation("Reviews");
                 });

@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineStore.Data;
 
 namespace OnlineStore.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201230164356_Deleted unnecessary usings && changed prop names")]
+    partial class Deletedunnecessaryusingschangedpropnames
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -189,7 +191,7 @@ namespace OnlineStore.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductsCategories");
+                    b.ToTable("ProductCategories");
                 });
 
             modelBuilder.Entity("OnlineStore.Data.Review", b =>
@@ -254,7 +256,7 @@ namespace OnlineStore.Migrations
             modelBuilder.Entity("OnlineStore.Data.Address", b =>
                 {
                     b.HasOne("OnlineStore.Data.User", "User")
-                        .WithMany("Addresses")
+                        .WithMany("Address")
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
@@ -338,7 +340,7 @@ namespace OnlineStore.Migrations
 
             modelBuilder.Entity("OnlineStore.Data.User", b =>
                 {
-                    b.Navigation("Addresses");
+                    b.Navigation("Address");
 
                     b.Navigation("Reviews");
                 });

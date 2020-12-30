@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineStore.Data;
 
 namespace OnlineStore.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201229235935_Add invoice and add enum type to address")]
+    partial class Addinvoiceandaddenumtypetoaddress
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,7 +59,7 @@ namespace OnlineStore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<bool>("Ordered")
+                    b.Property<bool>("Close")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<int?>("UserId")
@@ -153,9 +155,6 @@ namespace OnlineStore.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<string>("ImgUrl")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
                     b.Property<string>("Name")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
@@ -189,7 +188,7 @@ namespace OnlineStore.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductsCategories");
+                    b.ToTable("ProductCategories");
                 });
 
             modelBuilder.Entity("OnlineStore.Data.Review", b =>
@@ -254,7 +253,7 @@ namespace OnlineStore.Migrations
             modelBuilder.Entity("OnlineStore.Data.Address", b =>
                 {
                     b.HasOne("OnlineStore.Data.User", "User")
-                        .WithMany("Addresses")
+                        .WithMany("Address")
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
@@ -338,7 +337,7 @@ namespace OnlineStore.Migrations
 
             modelBuilder.Entity("OnlineStore.Data.User", b =>
                 {
-                    b.Navigation("Addresses");
+                    b.Navigation("Address");
 
                     b.Navigation("Reviews");
                 });
