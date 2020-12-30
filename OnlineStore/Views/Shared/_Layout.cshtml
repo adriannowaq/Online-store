@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var logged = false;
+ }
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -6,38 +10,112 @@
     <title>@ViewData["Title"] - OnlineStore</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/71b89ed6c5.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+    
+    <div>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">OnlineStore</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <a class="navbar-brand" href="/">BRAND</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-toggle" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
+                <div class="collapse navbar-collapse navbar-toggle" id="navbarNavAltMarkup">
+                    <div class="navbar-nav ml-auto">
+
+                        <a class="nav-item nav-link" href="http://facebook.com">
+                            <img src="~/img/fb.svg" />
+                        </a>
+                        <a class="nav-item nav-link mr-2" href="http://instagram.com">
+                            <img src="~/img/ig.svg" />
+                        </a>
+                        @if (logged)
+                        {
+                            <a class="nav-item nav-link" href="Profile">
+                                <img src="~/img/user.svg" />
+                                Username
+                            </a>
+                        }
+                        else
+                        {
+                            <a class="nav-item nav-link" href="Login">Zaloguj</a>
+                            <a class="nav-item nav-link" href="Register">Zarejestruj</a>
+                        }
+
+                    </div>
                 </div>
             </div>
         </nav>
-    </header>
-    <div class="container">
+
+        <nav id="menu" class="navbar navbar-expand-lg navbar-light pt-md-2 bg-light">
+            <div class="container">
+                <div class="collapse navbar-collapse navbar-toggle" id="navbarNavAltMarkup">
+                    <div class="navbar-nav mx-auto">
+                        <a class="nav-item nav-link active" href="/">Strona Głowna</a>
+                        <a class="nav-item nav-link" href="Shop">Sklep</a>
+                        <a class="nav-item nav-link" href="Contact">Kontakt</a>
+                        <a class="nav-item nav-link" href="Cart">
+                            <img src="~/img/cart.svg" />
+                            <span id="amount">
+                                $ 0.00
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <div class="container" style="padding-bottom: 10px;">
+            <div class="row d-flex justify-content-center">
+                <div class="col-4">
+                    <div class="nav-item">
+                        <form action="#">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Czego szukasz?">
+                                <div class="input-group-append">
+                                    <button class="btn btn-success" type="submit">Szukaj</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr class="m-0 d-none d-lg-block" style="padding-top: 10px;"/>
+    </div>
+    <div class="container mt-5">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2020 - OnlineStore - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer class="border-top footer text-muted fixed-bottom">
+        <div class="container mt-2">
+            <div class="row">
+                <div class="col-lg-6 col-md-9 col-sm-9">
+                    <div class="footer-about text-center">
+                        <b>Brand</b>
+                        <ul class="no-dots">
+                            <li>Adres: 61-895 Poznań Powstańców Wielkopolskich 5</li>
+                            <li>Numer telefonu: 654 982 988</li>
+                            <li>E-mail: onlinestore@gmail.com</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-3 col-sm-3">
+                    <div class="footer-useful text-center">
+                        <b>Przydatne linki</b>
+                        <ul class="list-unstyled">
+                            <li><a class="nav-link" href="/">Strona glowna</a></li>
+                            <li><a class="nav-link" href="Shop">Sklep</a></li>
+                            <li><a class="nav-link" href="Contact">Kontakt</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <p class="mx-auto">&copy; 2020 - OnlineStore - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a></p>
+            </div>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

@@ -2,7 +2,20 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="categories">
+                <div class="category">
+                    <span>Kategorie</span>
+                </div>
+                <ul class="no-dots">
+                    @for (int i = 1; i <= 10; i++)
+                    {
+                        <li><a href="#">Kategoria @i</a></li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>

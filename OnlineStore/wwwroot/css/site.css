@@ -1,71 +1,80 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
-
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
-}
-
-/* Provide sufficient contrast against white background */
-a {
-  color: #0366d6;
-}
-
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
-}
-
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
-}
-
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-  font-size: 14px;
-}
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.border-top {
-  border-top: 1px solid #e5e5e5;
-}
-.border-bottom {
-  border-bottom: 1px solid #e5e5e5;
-}
-
-.box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
-}
-
-button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
-}
-
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-  position: relative;
-  min-height: 100%;
+﻿body, html {
+    height: 100%
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+    font-family: 'Lato', sans-serif !important;
 }
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px; /* Vertically center the text there */
+header {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding-bottom: 20px;
+}
+
+.navbar{
+    background: none;
+    font-size: 16px;
+    font-weight:bold;
+    text-transform:uppercase;
+}
+
+#menu a{
+   margin: 0 20px;
+}
+.bg-light {
+    background: none !important;
+}
+
+.navbar-light .navbar-nav .nav-link:hover, .navbar-light .navbar-nav .nav-link.active{
+    text-decoration: underline;
+    text-decoration-style: solid;
+    font-weight: 900;
+    color: black;
+}
+
+.navbar img {
+    height: 24px;
+    vertical-align: middle;
+    opacity: 0.6;
+}
+
+.navbar img:hover {
+    opacity: 1;
+}
+.no-dots{
+    list-style-type: none; 
+    padding-left: 0;
+}
+.footer-useful a {
+    padding: 0;
+    color: #343a40;
+}
+.category {
+    background: gray;
+    color: white;
+    padding: 10px 25px 10px 40px;
+}
+.categories{
+    text-align: center;
+}
+.categories ul {
+    border: 1px solid #ebebeb;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.categories ul li a {
+    color: black;
+    text-decoration: none;
+}
+
+.card {
+    height: 400px;
+    border:none;
+}
+
+.map-responsive iframe {
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    position: absolute;
 }
