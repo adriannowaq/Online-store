@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -5,6 +6,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using OnlineStore.Data;
+using OnlineStore.Infrastructure;
+using OnlineStore.Repositories;
 using System;
 
 namespace OnlineStore
@@ -22,11 +25,19 @@ namespace OnlineStore
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+            {
+                options.LoginPath = "/Account/Login/";
+                options.LogoutPath = "/Account/Logout/";
+            });
             services.AddDbContextPool<AppDbContext>(options =>
                 options.UseMySql(
                     connectionString: 
                         Configuration.GetSection("ConnectionStrings").GetSection("DefaultConnection").Value, 
                     serverVersion: new MySqlServerVersion(new Version(8, 0, 22))));
+            services.AddSingleton<Sha256Helper>();
+            services.AddScoped<AccountRepository>();
+            services.AddHttpContextAccessor();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,9 +55,10 @@ namespace OnlineStore
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
 
+            app.UseCookiePolicy();
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

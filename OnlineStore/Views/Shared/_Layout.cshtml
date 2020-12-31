@@ -41,8 +41,8 @@
                         }
                         else
                         {
-                            <a class="nav-item nav-link" href="Login">Zaloguj</a>
-                            <a class="nav-item nav-link" href="Register">Zarejestruj</a>
+                            <a class="nav-item nav-link" asp-controller="Account" asp-action="Login">Zaloguj</a>
+                            <a class="nav-item nav-link" asp-controller="Account" asp-action="Register">Zarejestruj</a>
                         }
 
                     </div>
@@ -54,7 +54,11 @@
             <div class="container">
                 <div class="collapse navbar-collapse navbar-toggle" id="navbarNavAltMarkup">
                     <div class="navbar-nav mx-auto">
-                        <a class="nav-item nav-link active" href="/">Strona Głowna</a>
+                        <a route-active-controller="Home" 
+                           route-active-action="Index" 
+                           asp-controller="Home"
+                           asp-action="Index"
+                           class="nav-item nav-link">Strona Głowna</a>
                         <a class="nav-item nav-link" href="Shop">Sklep</a>
                         <a class="nav-item nav-link" href="Contact">Kontakt</a>
                         <a class="nav-item nav-link" href="Cart">
