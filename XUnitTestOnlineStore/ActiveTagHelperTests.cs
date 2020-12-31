@@ -14,12 +14,12 @@ namespace XUnitTestOnlineStore
         [Theory]
         [MemberData(nameof(TestData))]
         public void Is_Adding_Active_Class_Properly(string fromController, 
-                                        string tagController,
-                                        string fromAction,
-                                        string tagAction, 
-                                        string tagAttributes,
-                                        string expectedTagAttributes,
-                                        string activeClass = null)
+                                                    string tagController,
+                                                    string fromAction,
+                                                    string tagAction, 
+                                                    string tagAttributes,
+                                                    string expectedTagAttributes,
+                                                    string activeClass = null)
         {
             //arrange
             var activeTagHelper = new ActiveTagHelper()
