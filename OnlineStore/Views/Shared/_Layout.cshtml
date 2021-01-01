@@ -1,6 +1,8 @@
-﻿@{
+﻿@using System.Security.Claims;
+
+@{
     var logged = false;
- }
+}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -10,12 +12,11 @@
     <title>@ViewData["Title"] - OnlineStore</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="~/lib/font-awesome/css/all.min.css" rel="stylesheet" />
+    <script src="~/lib/font-awesome/js/all.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/71b89ed6c5.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    
     <div>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
@@ -27,16 +28,20 @@
                     <div class="navbar-nav ml-auto">
 
                         <a class="nav-item nav-link" href="http://facebook.com">
-                            <img src="~/img/fb.svg" />
+                            <i class="fab fa-lg fa-instagram"></i>
                         </a>
                         <a class="nav-item nav-link mr-2" href="http://instagram.com">
-                            <img src="~/img/ig.svg" />
+                            <i class="fab fa-lg fa-facebook-f"></i>
                         </a>
-                        @if (logged)
+                        @if (User.Identity.IsAuthenticated)
                         {
                             <a class="nav-item nav-link" href="Profile">
-                                <img src="~/img/user.svg" />
-                                Username
+                                <i class="fas fa-lg fa-user"></i>
+                                @User.FindFirst(ClaimTypes.Email)?.Value
+                            </a>
+                            <a class="nav-item nav-link" href="@Url.Action("Logout", "Account")">
+                                <i class="fas fa-lg fa-sign-out-alt"></i>
+                                Wyloguj
                             </a>
                         }
                         else
@@ -54,15 +59,15 @@
             <div class="container">
                 <div class="collapse navbar-collapse navbar-toggle" id="navbarNavAltMarkup">
                     <div class="navbar-nav mx-auto">
-                        <a route-active-controller="Home" 
-                           route-active-action="Index" 
+                        <a route-active-controller="Home"
+                           route-active-action="Index"
                            asp-controller="Home"
                            asp-action="Index"
                            class="nav-item nav-link">Strona Głowna</a>
                         <a class="nav-item nav-link" href="Shop">Sklep</a>
                         <a class="nav-item nav-link" href="Contact">Kontakt</a>
                         <a class="nav-item nav-link" href="Cart">
-                            <img src="~/img/cart.svg" />
+                            <i class="fas fa-lg fa-shopping-cart"></i>
                             <span id="amount">
                                 $ 0.00
                             </span>
@@ -87,7 +92,7 @@
                 </div>
             </div>
         </div>
-        <hr class="m-0 d-none d-lg-block" style="padding-top: 10px;"/>
+        <hr class="m-0 d-none d-lg-block" style="padding-top: 10px;" />
     </div>
     <div class="container mt-5">
         <main role="main" class="pb-3">

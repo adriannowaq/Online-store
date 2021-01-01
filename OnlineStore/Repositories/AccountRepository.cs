@@ -7,6 +7,7 @@ using System.Security.Claims;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace OnlineStore.Repositories
 {
@@ -40,13 +41,18 @@ namespace OnlineStore.Repositories
                 new Claim(ClaimTypes.Email, account.Email),
                 new Claim(ClaimTypes.Role, account.Role.ToString())
             };
-            var accountClaimsIdentity = new ClaimsIdentity(accountClaims);
+            var accountClaimsIdentity = new ClaimsIdentity(accountClaims, 
+                CookieAuthenticationDefaults.AuthenticationScheme);
             var principal = new ClaimsPrincipal(accountClaimsIdentity);
 
-            await httpContextAccessor.HttpContext.SignInAsync(principal);
+            await httpContextAccessor.HttpContext
+                .SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
             return true;
         }
+
+        public Task SignOutAsync() =>
+            httpContextAccessor.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
         public Task<bool> CheckEmailExistsAsync(string email)
         {

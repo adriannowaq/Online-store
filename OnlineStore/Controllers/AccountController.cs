@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using OnlineStore.Data;
 using OnlineStore.Models.Account;
 using OnlineStore.Repositories;
@@ -37,7 +38,7 @@ namespace OnlineStore.Controllers
             {
                 var logged = await accountRepository.SignInAsync(loginDetails.Email, loginDetails.Password);
                 if (logged)
-                    return RedirectToAction("Home", nameof(HomeController.Index));
+                    return RedirectToAction(nameof(HomeController.Index), "Home");
             }
             ModelState.AddModelError("", "Nieprawidłowy email lub hasło.");
             return View();
@@ -68,6 +69,15 @@ namespace OnlineStore.Controllers
                     ModelState.AddModelError("", "Adres email jest już zajęty.");
             }
             return View();
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Logout()
+        {
+            await accountRepository.SignOutAsync();
+
+            return RedirectToAction(nameof(HomeController.Index), "Home");
         }
     }
 }
