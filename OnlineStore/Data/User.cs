@@ -10,12 +10,12 @@ namespace OnlineStore.Data
         public string Phone { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public Role Role { get; set; }
+        public UserRole Role { get; set; }
         public bool Active { get; set; }
         public virtual ICollection<Address> Addresses { get; set; }
         public virtual ICollection<Review> Reviews { get; set; }
     }
-    public enum Role
+    public enum UserRole
     {
         None,
         User,

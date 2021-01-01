@@ -1,10 +1,15 @@
-﻿@model RegisterModel
+﻿@using Microsoft.Extensions.Options
+@using reCAPTCHA.AspNetCore.Versions;
+@using reCAPTCHA.AspNetCore
+@inject IOptions<RecaptchaSettings> RecaptchaSettings
+
+@model RegisterModel
 
 @{
     ViewData["Title"] = "Rejestracja";
 }
 
-<form asp-action="register" method="post">
+<form id="RegisterForm" asp-action="register" method="post">
     <div class="jumbotron text-center">
         <h3 class="mb-3">Zarejestruj się</h3>
         <div asp-validation-summary="ModelOnly" class="text-danger text-center"></div>
@@ -26,9 +31,17 @@
                 <span class="text-danger w-100" asp-validation-for="ConfirmPassword"></span>
             </div>
         </div>
-        <div class="row ">
+        <div class="row">
+            <div class="form-group">
+                @(Html.Recaptcha(RecaptchaSettings?.Value, new RecaptchaV3HiddenInput
+                {
+                    Language = System.Globalization.CultureInfo.CurrentCulture.Name.Substring(0, 2),
+                    IsAsync = false,
+
+                }))
+            </div>
             <div class="col-4 col-sm-12 mx-auto">
-                <input class="btn btn-dark text-center" type="submit" value="Zarejestruj" />
+                <input id="recaptcha" class="btn btn-dark text-center" type="submit" value="Zarejestruj" />
             </div>
         </div>
     </div>
@@ -37,6 +50,10 @@
     ul {
         padding: 0;
         list-style: none;
+    }
+
+    .grecaptcha-badge {
+        z-index: 1031;
     }
 </style>
 

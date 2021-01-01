@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authentication;
 
 namespace OnlineStore.Repositories
 {
-    public class AccountRepository
+    public class AccountRepository : IAccountRepository
     {
         private readonly AppDbContext dbContext;
         private readonly Sha256Helper sha256Helper;
@@ -53,7 +53,7 @@ namespace OnlineStore.Repositories
             return dbContext.Users.Where(u => u.Email.Equals(email)).AnyAsync();
         }
 
-        public async Task<bool> CreateAccountAsync(string email, string password)
+        public async Task<bool> CreateAccountAsync(string email, string password, UserRole role = UserRole.None)
         {
             password = sha256Helper.Hash(password);
 
@@ -62,7 +62,8 @@ namespace OnlineStore.Repositories
                 await dbContext.Users.AddAsync(new User
                 {
                     Email = email,
-                    Password = password
+                    Password = password,
+                    Role = role
                 });
                 await dbContext.SaveChangesAsync();
 

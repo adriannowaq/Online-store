@@ -1,17 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OnlineStore.Data;
 using OnlineStore.Models.Account;
 using OnlineStore.Repositories;
+using reCAPTCHA.AspNetCore;
 using System.Threading.Tasks;
 
 namespace OnlineStore.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly AccountRepository accountRepository;
+        private readonly IAccountRepository accountRepository;
+        private readonly IRecaptchaService recaptchaService;
 
-        public AccountController(AccountRepository accountRepository)
+        public AccountController(IAccountRepository accountRepository, IRecaptchaService recaptchaService)
         {
             this.accountRepository = accountRepository;
+            this.recaptchaService = recaptchaService;
         }
 
         [HttpGet]
@@ -40,14 +44,26 @@ namespace OnlineStore.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register([FromForm] RegisterModel registerDetails)
         {
+            var recaptcha = await recaptchaService.Validate(Request);
+            if (!recaptcha.success || recaptcha.score < 0.7)
+            {
+                ModelState.AddModelError("",
+                    "Nie przeszedłeś poprawnie weryfikacji reCAPTCHA, spróbuj odświeżyć stronę");
+                return View();
+            }
+
             if (ModelState.IsValid)
             {
                 var accountCreated = await accountRepository
-                    .CreateAccountAsync(registerDetails.Email, registerDetails.Password);
+                    .CreateAccountAsync(registerDetails.Email, registerDetails.Password, UserRole.User);
                 if (accountCreated)
+                {
+                    TempData["RegisterCompleted"] = "Poprawnie utworzono konto!";
                     return RedirectToAction(nameof(Login));
+                }
                 else
                     ModelState.AddModelError("", "Adres email jest już zajęty.");
             }

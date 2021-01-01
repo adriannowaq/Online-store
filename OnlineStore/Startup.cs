@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using OnlineStore.Data;
 using OnlineStore.Infrastructure;
 using OnlineStore.Repositories;
+using reCAPTCHA.AspNetCore;
 using System;
 
 namespace OnlineStore
@@ -36,8 +37,9 @@ namespace OnlineStore
                         Configuration.GetSection("ConnectionStrings").GetSection("DefaultConnection").Value, 
                     serverVersion: new MySqlServerVersion(new Version(8, 0, 22))));
             services.AddSingleton<Sha256Helper>();
-            services.AddScoped<AccountRepository>();
+            services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddHttpContextAccessor();
+            services.AddRecaptcha(Configuration.GetSection("RecaptchaSettings"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
