@@ -38,6 +38,7 @@ namespace OnlineStore
                     serverVersion: new MySqlServerVersion(new Version(8, 0, 22))));
             services.AddSingleton<Sha256Helper>();
             services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
             services.AddHttpContextAccessor();
             services.AddRecaptcha(Configuration.GetSection("RecaptchaSettings"));
         }
