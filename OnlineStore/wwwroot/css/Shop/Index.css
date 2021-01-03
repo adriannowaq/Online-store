@@ -1,0 +1,23 @@
+﻿.product-description {
+    text-align: center;
+}
+
+.product-description a {
+    color: black;
+    text-decoration: none;
+}
+
+.sort {
+    border: 1px solid #ebebeb;
+    text-align: center;
+}
+
+.sort .form-group {
+    margin-top: 10px;
+}
+
+.sort-description {
+    background: gray;
+    color: white;
+    padding: 10px 25px 10px 40px;
+}

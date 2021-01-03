@@ -1,0 +1,54 @@
+﻿@{
+    ViewData["Title"] = "Sklep";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="sort">
+                <div>
+                    <div class="categories">
+                        <div class="category">
+                            <span>Sortowanie</span>
+                        </div>
+                    </div>
+                    <div>
+                        <h5 class="mt-1">Cena</h5>
+                        <select class="form-control" id="price" style="width: 80%; text-align:center; margin:auto;">
+                            <option>Najwyższa</option>
+                            <option>Najniższa</option>
+                        </select>
+                        <br />
+                    </div>
+                    <button class="btn btn-success mb-2" type="submit">Szukaj</button>
+                </div>
+            </div>
+            <div class="mt-4">
+                @await Component.InvokeAsync("NavigationCategory")
+            </div>
+        </div>
+        <div class="col-lg-9">
+            <div class="product-list">
+                <div class="row">
+                    @for (int i = 1; i <= 10; i++)
+                    {
+                        <div class="col-lg-4">
+                            <div class="product mx-auto">
+                                <img src="~/img/product.jpg" class="img-fluid mx-auto d-block" />
+                                <div class="product-description">
+                                    <h6><a href="#">Produkt @i</a></h6>
+                                    <h5>$@i.00</h5>
+                                    <a href="#"><i class="fa fa-shopping-cart"></i> Dodaj do koszyka</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <link href="~/css/Shop/Index.min.css" rel="stylesheet" />
+}
