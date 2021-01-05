@@ -24,5 +24,17 @@
       "wwwroot/js/CustomValidators/SeparatorFixes.js",
       "wwwroot/js/CustomValidators/MaxFileSize.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/css/Shop/Details.min.css",
+    "inputFiles": [
+      "wwwroot/css/Shop/Details.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/Shop/details.min.js",
+    "inputFiles": [
+      "wwwroot/js/Shop/details.js"
+    ]
   }
 ]

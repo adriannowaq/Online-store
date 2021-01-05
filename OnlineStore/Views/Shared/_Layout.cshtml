@@ -151,9 +151,9 @@
                     <div class="footer-useful text-center">
                         <b>Przydatne linki</b>
                         <ul class="list-unstyled">
-                            <li><a class="nav-link" href="/">Strona glowna</a></li>
-                            <li><a class="nav-link" href="Shop">Sklep</a></li>
-                            <li><a class="nav-link" href="Contact">Kontakt</a></li>
+                            <li>@Html.ActionLink("Strona Główna", "Index", "Home")</li>
+                            <li>@Html.ActionLink("Sklep","Index","Shop")</li>
+                            <li>@Html.ActionLink("Kontakt", "Index", "Contact")</li>
                         </ul>
                     </div>
                 </div>
