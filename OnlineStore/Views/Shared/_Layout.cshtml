@@ -1,8 +1,5 @@
 ﻿@using System.Security.Claims;
 
-@{
-    var logged = false;
-}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -12,6 +9,7 @@
     <title>@ViewData["Title"] - OnlineStore</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link href="~/lib/UISearch/search.css" rel="stylesheet" />
     <link href="~/lib/font-awesome/css/all.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
     @await RenderSectionAsync("Styles", required: false)
@@ -24,9 +22,15 @@
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-toggle" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+                <div class="ui search" style="margin-left: 25%">
+                    <div class="ui icon input">
+                        <input type="text" class="prompt" placeholder="Czego szukasz?" autocomplete="off">
+                        <i class="search icon"></i>
+                    </div>
+                    <div class="results"></div>
+                </div>
                 <div class="collapse navbar-collapse navbar-toggle" id="navbarNavAltMarkup">
                     <div class="navbar-nav ml-auto">
-
                         <a class="nav-item nav-link" href="http://facebook.com">
                             <i class="fab fa-lg fa-instagram"></i>
                         </a>
@@ -110,22 +114,6 @@
                 </div>
             </div>
         </nav>
-        <div class="container" style="padding-bottom: 10px;">
-            <div class="row d-flex justify-content-center">
-                <div class="col-4">
-                    <div class="nav-item">
-                        <form action="#">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Czego szukasz?">
-                                <div class="input-group-append">
-                                    <button class="btn btn-success" type="submit">Szukaj</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
         <hr class="m-0 d-none d-lg-block" style="padding-top: 10px;" />
     </div>
     <div class="container mt-5">
@@ -162,9 +150,12 @@
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jqueryui/jquery-ui.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/lib/font-awesome/js/all.min.js"></script>
+    <script src="~/js/itemsearch.js"></script>
+    <script src="~/lib/UISearch/search.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

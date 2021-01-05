@@ -9,6 +9,10 @@
     {
       "library": "tinymce@5.6.2",
       "destination": "wwwroot/tinymce/"
+    },
+    {
+      "library": "jqueryui@1.12.1",
+      "destination": "wwwroot/lib/jqueryui/"
     }
   ]
 }

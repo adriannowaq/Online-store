@@ -1,4 +1,7 @@
-﻿@{
+﻿@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Mvc.Bootstrap4.Core;
+@{
     ViewData["Title"] = "Sklep";
 }
 
@@ -32,15 +35,17 @@
                 <div class="row">
                     @for (int i = 1; i <= 10; i++)
                     {
-                        <div class="col-lg-4">
-                            <div class="product mx-auto">
-                                <img src="~/img/product.jpg" class="img-fluid mx-auto d-block" />
-                                <div class="product-description">
-                                    <h6><a href="#">Produkt @i</a></h6>
-                                    <h5>$@i.00</h5>
-                                    <a href="#"><i class="fa fa-shopping-cart"></i> Dodaj do koszyka</a>
+                        <div class="col-lg-4 zoom">
+                            <a href="#">
+                                <div class="product mx-auto">
+                                    <img src="~/img/product.jpg" class="img-fluid mx-auto d-block" />
+                                    <div class="product-description">
+                                        <h6>Produkt @i</h6>
+                                        <h5>@i.00 zł</h5>
+                                        <a href="#"><i class="fa fa-shopping-cart"></i> Dodaj do koszyka</a>
+                                    </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                     }
                 </div>
