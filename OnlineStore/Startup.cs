@@ -5,11 +5,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using OnlineStore.Config;
 using OnlineStore.Data;
-using OnlineStore.Infrastructure;
+using OnlineStore.Infrastructure.Helpers;
+using OnlineStore.Infrastructure.Services;
 using OnlineStore.Repositories;
 using reCAPTCHA.AspNetCore;
 using System;
+using System.IO;
 
 namespace OnlineStore
 {
@@ -36,9 +39,19 @@ namespace OnlineStore
                     connectionString: 
                         Configuration.GetSection("ConnectionStrings").GetSection("DefaultConnection").Value, 
                     serverVersion: new MySqlServerVersion(new Version(8, 0, 22))));
+
+            var googleCloudSettings = Configuration.GetSection("GoogleCloudSettings");
+            services.AddOptions<GoogleCloudSettings>().Configure(c =>
+                {
+                    c.StorageBucket = googleCloudSettings.GetSection("StorageBucket").Value;
+                    c.CredentialJson = File.ReadAllText(googleCloudSettings.GetSection("CredentialFile").Value);
+                });
+            services.AddSingleton<ICloudStorageService, GoogleCloudStorageService>();
             services.AddSingleton<Sha256Helper>();
+            services.AddSingleton<IHtmlSanitizationService, HtmlSanitizationService>();
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
             services.AddHttpContextAccessor();
             services.AddRecaptcha(Configuration.GetSection("RecaptchaSettings"));
         }

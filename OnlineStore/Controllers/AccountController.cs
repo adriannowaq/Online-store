@@ -26,6 +26,10 @@ namespace OnlineStore.Controllers
         public IActionResult Register() => View();
 
         [HttpGet]
+        [Authorize]
+        public IActionResult Details() => View();
+
+        [HttpGet]
         public async Task<IActionResult> CheckEmailExists([FromQuery] string email)
         {
             return Json(!await accountRepository.CheckEmailExistsAsync(email));
@@ -77,6 +81,12 @@ namespace OnlineStore.Controllers
         {
             await accountRepository.SignOutAsync();
 
+            return RedirectToAction(nameof(HomeController.Index), "Home");
+        }
+
+        [HttpGet]
+        public IActionResult AccessDenied()
+        {
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
     }

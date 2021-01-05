@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace OnlineStore.Infrastructure
+namespace OnlineStore.Infrastructure.Helpers
 {
     public class Sha256Helper
     {

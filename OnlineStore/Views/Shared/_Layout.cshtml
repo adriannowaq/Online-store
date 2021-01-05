@@ -35,10 +35,32 @@
                         </a>
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <a class="nav-item nav-link" href="Profile">
-                                <i class="fas fa-lg fa-user"></i>
-                                @User.FindFirst(ClaimTypes.Email)?.Value
-                            </a>
+                            <div class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" 
+                                    route-active-controllers="Admin Account"
+                                    id="navbarDropdown" role="button" 
+                                    data-toggle="dropdown" 
+                                    aria-haspopup="true" 
+                                    aria-expanded="false"
+                                 >
+                                    <i class="fas fa-lg fa-user"></i>
+                                    @User.FindFirst(ClaimTypes.Email)?.Value
+                                 </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item"
+                                       href="@Url.Action("Details", "Account")">
+                                        Profil
+                                    </a>
+                                    @if ((User.FindFirst(ClaimTypes.Role)?.Value).Equals(UserRole.Admin.ToString()))
+                                    {
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item"
+                                           href="@Url.Action("AddProduct", "Admin")">
+                                            Dodaj produkt
+                                        </a>
+                                    }
+                                </div>
+                            </div>
                             <a class="nav-item nav-link" href="@Url.Action("Logout", "Account")">
                                 <i class="fas fa-lg fa-sign-out-alt"></i>
                                 Wyloguj
@@ -59,23 +81,23 @@
             <div class="container">
                 <div class="collapse navbar-collapse navbar-toggle" id="navbarNavAltMarkup">
                     <div class="navbar-nav mx-auto">
-                        <a route-active-controller="Home"
-                           route-active-action="Index"
+                        <a route-active-controllers="Home"
+                           route-active-actions="Index"
                            asp-controller="Home"
                            asp-action="Index"
                            class="nav-item nav-link">Strona Głowna</a>
-                        <a route-active-controller="Shop"
-                           route-active-action="Index"
+                        <a route-active-controllers="Shop"
+                           route-active-actions="Index"
                            asp-controller="Shop"
                            asp-action="Index"
                            class="nav-item nav-link">Sklep</a>
-                        <a route-active-controller="Contact"
-                           route-active-action="Index"
+                        <a route-active-controllers="Contact"
+                           route-active-actions="Index"
                            asp-controller="Contact"
                            asp-action="Index"
                            class="nav-item nav-link">Kontakt</a>
-                        <a route-active-controller="Cart"
-                           route-active-action="Index"
+                        <a route-active-controllers="Cart"
+                           route-active-actions="Index"
                            asp-controller="Cart"
                            asp-action="Index"
                            class="nav-item nav-link">

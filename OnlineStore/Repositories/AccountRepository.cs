@@ -1,7 +1,7 @@
 ﻿using OnlineStore.Data;
 using System.Threading.Tasks;
 using System.Linq;
-using OnlineStore.Infrastructure;
+using OnlineStore.Infrastructure.Helpers;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using System.Collections.Generic;

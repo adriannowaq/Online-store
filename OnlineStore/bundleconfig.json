@@ -10,5 +10,19 @@
     "inputFiles": [
       "wwwroot/css/Shop/Index.css"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/tinymce/langs/pl.min.js",
+    "inputFiles": [
+      "wwwroot/tinymce/langs/pl.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/CustomValidators/bundle.js",
+    "inputFiles": [
+      "wwwroot/js/CustomValidators/AllowedContentTypes.js",
+      "wwwroot/js/CustomValidators/SeparatorFixes.js",
+      "wwwroot/js/CustomValidators/MaxFileSize.js"
+    ]
   }
 ]

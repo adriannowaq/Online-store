@@ -147,13 +147,16 @@ namespace OnlineStore.Migrations
                     b.Property<bool>("Available")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<string>("CloudStorageImageName")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("CloudStorageImageUrl")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
                     b.Property<int>("Count")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<string>("ImgUrl")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("Name")
@@ -165,7 +168,7 @@ namespace OnlineStore.Migrations
                     b.Property<string>("Producer")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<int?>("ProductCategoryId")
+                    b.Property<int>("ProductCategoryId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -306,7 +309,9 @@ namespace OnlineStore.Migrations
                 {
                     b.HasOne("OnlineStore.Data.ProductCategory", "ProductCategory")
                         .WithMany("Products")
-                        .HasForeignKey("ProductCategoryId");
+                        .HasForeignKey("ProductCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("ProductCategory");
                 });

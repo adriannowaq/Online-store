@@ -56,7 +56,7 @@ header {
 .categories{
     text-align: center;
 }
-.categories ul {
+.categories ul, .buttons {
     border: 1px solid #ebebeb;
     padding-top: 10px;
     padding-bottom: 10px;

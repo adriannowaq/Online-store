@@ -1,0 +1,96 @@
+﻿@using OnlineStore.Repositories
+@inject IProductCategoryRepository productCategoryRepository
+
+@model AddProductModel
+
+<div class="row">
+    <div class="col text-center">
+        <h1>Dodaj produkt</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <div id="ProductAdded" class="alert alert-success text-center d-none" role="alert">
+            Dodano! Za 3 sekundy zostaniesz przeniesiony do przedmiotu.
+        </div>
+        <form id="AddProduct" asp-action="AddProduct" method="post">
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <div class="text-center"><span class="text-danger w-100" asp-validation-for="Name"></span></div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Producer" class="control-label"></label>
+                <input asp-for="Producer" class="form-control" />
+                <div class="text-center"><span class="text-danger w-100" asp-validation-for="Producer"></span></div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Count" class="control-label"></label>
+                <input asp-for="Count" class="form-control" />
+                <div class="text-center"><span class="text-danger w-100" asp-validation-for="Count"></span></div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <div class="text-center"><span class="text-danger w-100" asp-validation-for="Price"></span></div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <div class="text-center"><span class="text-danger w-100" asp-validation-for="Description"></span></div>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProductCategory" class="control-label"></label>
+                <select asp-for="ProductCategory"
+                        asp-items="@(new SelectList(await productCategoryRepository.GetProductCategoriesAsync(), "Id", "Name"))"
+                        class="form-control">
+                    <option selected>Wybierz kategorię</option>
+                </select>
+                <div class="text-center"><span class="text-danger w-100" asp-validation-for="ProductCategory"></span></div>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImageFile" class="control-label"></label>
+                <input asp-for="ImageFile" class="form-control-file" />
+                <div class="text-center"><span class="text-danger w-100" asp-validation-for="ImageFile"></span></div>
+            </div>
+            <div id="LoadingSpinner" class="form-group d-none">
+                <div class="d-flex flex-column align-items-center justify-content-center">
+                    <div class="row">
+                        <div class="spinner-border text-secondary" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <span>Dodawanie...</span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group text-center">
+                <input class="btn btn-dark" type="submit" value="Dodaj" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .nav-link {
+        margin-left: 4px;
+        margin-right: 4px;
+    }
+</style>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/tinymce/tinymce.min.js"></script>
+    <script src="~/js/Admin/AddProduct.js"></script>
+    <script src="~/tinymce/langs/pl.min.js"></script>
+    <script type="text/javascript">
+        setApiUrl("@Url.Action(nameof(AdminController.AddProduct))");
+        tinymce.init({
+            selector: "#Description",
+            language: 'pl',
+            language_url: '/js/tinymce/langs/pl.js',
+            height: "300"
+        });
+    </script>
+}

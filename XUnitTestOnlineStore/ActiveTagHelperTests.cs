@@ -2,50 +2,45 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing;
 using Moq;
-using OnlineStore.Infrastructure;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
+using XUnitTestOnlineStore.Data;
+using OnlineStore.Infrastructure.Helpers;
 
 namespace XUnitTestOnlineStore
 {
     public partial class ActiveTagHelperTests
     {
         [Theory]
-        [MemberData(nameof(TestData))]
-        public void Is_Adding_Active_Class_Properly(string fromController, 
-                                                    string tagController,
-                                                    string fromAction,
-                                                    string tagAction, 
-                                                    string tagAttributes,
-                                                    string expectedTagAttributes,
-                                                    string activeClass = null)
+        [ClassData(typeof(ActiveTagHelperTestsData))]
+        public void Is_Adding_Active_Class_Properly(ActiveTagHelperTestModel testModel)
         {
             //arrange
             var activeTagHelper = new ActiveTagHelper()
             {
-                Controller = tagController,
-                Action = tagAction,
+                Controllers = testModel.TagControllers,
+                Actions = testModel.TagActions,
                 ViewContext = new ViewContext()
                 {
                     RouteData = new RouteData(new RouteValueDictionary()
                     {
-                        { "controller", fromController },
-                        { "action", fromAction }
+                        { "controller", testModel.FromController },
+                        { "action", testModel.FromAction }
                     })
                 }
             };
-            if (activeClass != null)
-                activeTagHelper.ActiveClass = activeClass;
+            if (testModel.ActiveClasses != null)
+                activeTagHelper.ActiveClasses = testModel.ActiveClasses;
 
             var tagHelperContext = 
                 new TagHelperContext(new TagHelperAttributeList(), new Dictionary<object, object>(), "");
 
             var tagHelperContent = new Mock<TagHelperContent>();
-            var tagHelperOutput = new TagHelperOutput("a",
+            var tagHelperOutput = new TagHelperOutput("",
                 new TagHelperAttributeList(new List<TagHelperAttribute>()
                 {
-                    new TagHelperAttribute("class", tagAttributes)
+                    new TagHelperAttribute("class", testModel.TagAttributes)
                 }),
                 (cache, encoder) => Task.FromResult(tagHelperContent.Object));
 
@@ -54,7 +49,7 @@ namespace XUnitTestOnlineStore
 
             //assert
             tagHelperOutput.Attributes.TryGetAttribute("class", out var attribute);
-            Assert.Equal(expectedTagAttributes, attribute.Value);
+            Assert.Equal(testModel.ExpectedClassAttributes, attribute.Value);
         }
     }
 }
