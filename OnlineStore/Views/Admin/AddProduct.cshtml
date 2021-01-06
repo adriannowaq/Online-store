@@ -81,15 +81,15 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script src="~/tinymce/tinymce.min.js"></script>
-    <script src="~/js/Admin/AddProduct.js"></script>
-    <script src="~/tinymce/langs/pl.min.js"></script>
+    <script src="~/lib/tinymce/tinymce.min.js" asp-append-version="true"></script>
+    <script src="~/lib/tinymce/langs/pl.min.js" asp-append-version="true"></script>
+    <script src="~/js/Admin/addProduct.min.js" asp-append-version="true"></script>
     <script type="text/javascript">
-        setApiUrl("@Url.Action(nameof(AdminController.AddProduct))");
+        addApiUrl("adminAddProduct", "@Url.Action(nameof(AdminController.AddProduct))");
         tinymce.init({
             selector: "#Description",
             language: 'pl',
-            language_url: '/js/tinymce/langs/pl.js',
+            language_url: '/js/lib/tinymce/langs/pl.min.js',
             height: "300"
         });
     </script>

@@ -5,6 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\js\apiUrls.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\js\apiUrls.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Google.Cloud.Storage.V1" Version="3.4.0-beta01" />
     <PackageReference Include="HtmlSanitizer" Version="5.0.372" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.1" />
@@ -27,6 +35,10 @@
 
   <ItemGroup>
     <Folder Include="Views\Shared\Account\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\js\apiUrls.min.js" />
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,5 @@
 ﻿@using System.Security.Claims;
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,8 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - OnlineStore</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
-    <link href="~/lib/UISearch/search.css" rel="stylesheet" />
+    <link href="~/css/site.min.css" rel="stylesheet" />
+    <link href="~/lib/semantic-ui/components/search.min.css" rel="stylesheet" />
     <link href="~/lib/font-awesome/css/all.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
     @await RenderSectionAsync("Styles", required: false)
@@ -24,7 +23,7 @@
                 </button>
                 <div class="ui search" style="margin-left: 25%">
                     <div class="ui icon input">
-                        <input type="text" class="prompt" placeholder="Czego szukasz?" autocomplete="off">
+                        <input type="text" class="prompt form-control search-input" placeholder="Czego szukasz?" autocomplete="off">
                         <i class="search icon"></i>
                     </div>
                     <div class="results"></div>
@@ -40,16 +39,15 @@
                         @if (User.Identity.IsAuthenticated)
                         {
                             <div class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" 
-                                    route-active-controllers="Admin Account"
-                                    id="navbarDropdown" role="button" 
-                                    data-toggle="dropdown" 
-                                    aria-haspopup="true" 
-                                    aria-expanded="false"
-                                 >
+                                <a class="nav-link dropdown-toggle" href="#"
+                                   route-active-controllers="Admin Account"
+                                   id="navbarDropdown" role="button"
+                                   data-toggle="dropdown"
+                                   aria-haspopup="true"
+                                   aria-expanded="false">
                                     <i class="fas fa-lg fa-user"></i>
                                     @User.FindFirst(ClaimTypes.Email)?.Value
-                                 </a>
+                                </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item"
                                        href="@Url.Action("Details", "Account")">
@@ -140,7 +138,7 @@
                         <b>Przydatne linki</b>
                         <ul class="list-unstyled">
                             <li>@Html.ActionLink("Strona Główna", "Index", "Home")</li>
-                            <li>@Html.ActionLink("Sklep","Index","Shop")</li>
+                            <li>@Html.ActionLink("Sklep", "Index", "Shop")</li>
                             <li>@Html.ActionLink("Kontakt", "Index", "Contact")</li>
                         </ul>
                     </div>
@@ -152,10 +150,14 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/jqueryui/jquery-ui.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/lib/font-awesome/js/all.min.js"></script>
+    <script src="~/lib/semantic-ui/components/api.min.js"></script>
+    <script src="~/lib/semantic-ui/components/search.min.js"></script>
     <script src="~/js/itemsearch.js"></script>
-    <script src="~/lib/UISearch/search.js"></script>
+    <script src="~/js/apiUrls.min.js"></script>
+    <script type="text/javascript">
+        addApiUrl("search", "@Url.Action(nameof(ShopController.SearchProducts), nameof(ShopController).RemoveController())");
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

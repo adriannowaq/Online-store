@@ -20,9 +20,9 @@
   {
     "outputFileName": "wwwroot/js/CustomValidators/bundle.js",
     "inputFiles": [
-      "wwwroot/js/CustomValidators/AllowedContentTypes.js",
-      "wwwroot/js/CustomValidators/SeparatorFixes.js",
-      "wwwroot/js/CustomValidators/MaxFileSize.js"
+      "wwwroot/js/CustomValidators/allowedContentTypes.js",
+      "wwwroot/js/CustomValidators/separatorFixes.js",
+      "wwwroot/js/CustomValidators/maxFileSize.js"
     ]
   },
   {
@@ -35,6 +35,18 @@
     "outputFileName": "wwwroot/js/Shop/details.min.js",
     "inputFiles": [
       "wwwroot/js/Shop/details.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/Admin/addProduct.min.js",
+    "inputFiles": [
+      "wwwroot/js/Admin/addProduct.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/apiUrls.min.js",
+    "inputFiles": [
+      "wwwroot/js/apiUrls.js"
     ]
   }
 ]

@@ -1,13 +1,8 @@
 ﻿const form = document.getElementById("AddProduct");
-let apiUrl = "";
 
 $(document).ready(() => {
     $("#AddProduct").on("submit", submit);
 });
-
-function setApiUrl(url) {
-    apiUrl = url;
-}
 
 function submit(event) {
     event.preventDefault();
@@ -16,7 +11,7 @@ function submit(event) {
         $("#AddProduct input[type='submit']").prop("disabled", true).addClass("d-none");
         loadingSpinner.removeClass("d-none");
 
-        fetch(apiUrl, {
+        fetch(apiUrls["adminAddProduct"], {
             method: "POST",
             body: new FormData(form)
         })

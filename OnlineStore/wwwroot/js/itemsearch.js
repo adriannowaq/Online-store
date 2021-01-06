@@ -1,19 +1,14 @@
 ﻿$(document).ready(function () {
-    var
-        content = [
-            {
-                title: 'Horse',
-                description: 'An Animal',
-            },
-            {
-                title: 'Cow',
-                description: 'Another Animal',
-            }
-        ]
-        ;
     $('.ui.search')
         .search({
-            source: content
-        })
-        ;
+            apiSettings: {
+                url: `${apiUrls["search"]}?name={query}`
+            },
+            fields: {
+                results: "products",
+                title: "name",
+                url: "url"
+            },
+            minCharacters: 2
+        });
 });
