@@ -12,12 +12,6 @@ $("#reviews-panel").click(function (e) {
     $("#reviews-panel").toggleClass("tile-active").fadeOut(0).fadeIn(500);
 });
 
-$("#reviews").click(function (e) {
-    $("#description-accordion").addClass("d-none").fadeOut(500).fadeIn(0);
-    $("#reviews-accordion").toggleClass("d-none").fadeOut(0).fadeIn(500);
-    $("#description").removeClass("tile-active");
-    $("#reviews-panel").toggleClass("tile-active").fadeOut(0).fadeIn(500);
-});
 
 $(function () {
     $('#ratingbar').barrating({

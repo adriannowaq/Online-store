@@ -6,8 +6,6 @@
 }
 
 
-
-
 <div class="container">
     <div class="borderbox">
         <div class="row m-0 p-0">
@@ -23,21 +21,14 @@
                     <div class="card-body">
                         <h4>Apple MacBook Pro M1/8GB/256/Mac OS Space Gray </h4>
                         <div class="grade-count mb-2">
-                            <a href="#reviews-accordion" id="reviews">Opinie (3)</a>
                             <div>
-                                <select id="ratingbar">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                </select>
-                            </div>
-                            <div>
-
+                                @for (int j = 0; j < 5; j++)
+                                {
+                                    <i class="fas fa-star"></i>
+                                }
                             </div>
                         </div>
-
+                        <p>Ilość w magazynie: 2</p>
                         <h3 class="mt-4">6666,66 zł</h3>
                         <input type="number" name="num" value="1" min="1" max="999" class="form-control one-width" />
                         <button class="mt-2 btn btn-secondary one-width" id="btn-addtocart">
@@ -53,15 +44,15 @@
 
         </div>
         <div class="row m-0 p-0" id="details-nav">
-            <div class="col-6 text-center  border border-right m-0" id="description">
+            <div class="col-6 text-center  border border-right m-0 tile-active" id="description">
                 Opis produktu
             </div>
             <div class="col-6 text-center  border border-left  m-0" id="reviews-panel">
-                Opinie użytkowników
+                Opinie użytkowników (5)
             </div>
         </div>
 
-        <div id="description-accordion" class="d-none">
+        <div id="description-accordion">
             <div class="col-12">
                 <div class="text-body text-justify p-5">
                     @for (int i = 0; i < 4; i++)
@@ -79,8 +70,40 @@
         </div>
 
         <div id="reviews-accordion" class="d-none">
-            <div class="col-12">
-                <div class="text-body text-justify p-5">
+            <div class="col-12  p-5 text-center">
+                <div class="add-review border-bottom mb-5 ">
+                    <h4 class="text-center">Dodaj swoją opinie</h4>
+                    <form class="mb-5">
+                        <div class="form-group ">
+                            <label for="ratingbar">Ocena:</label>
+                            <select id="ratingbar">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                        </div>
+                        <div class="form-group w-50 mx-auto">
+                            <label for="review">Opinia:</label>
+                            @*<input type="text" class="form-control review-input" id="review" placeholder="Twoje zdanie na temat produktu...">*@
+                            <textarea class="form-control" id="review" rows="3" placeholder="Twoje zdanie na temat produktu..."></textarea>
+                        </div>
+
+                        <div class="form-group  w-50 mx-auto">
+                            <label for="name">Imie i nazwisko:</label>
+                            <input type="text" class="form-control" id="name" placeholder="Jan Kowalski">
+                        </div>
+                        <button class="mt-2 btn btn-secondary one-width">
+                            <span id="btn-cart">
+                                Dodaj opinie
+                            </span>
+                        </button>
+
+                    </form>
+                </div>
+                <div class="text-body text-justify">
+                    <h4 class="text-center">Opinie klientów</h4>
                     @for (int i = 0; i < 5; i++)
                     {
 
