@@ -1,0 +1,36 @@
+﻿@model AddReviewModel
+
+<div class="add-review border-bottom mb-5 ">
+    <h4 class="text-center">Dodaj swoją opinie</h4>
+    <form class="mb-5" asp-action="@nameof(ShopController.AddReview)" method="post">
+        <div class="form-group ">
+            <label asp-for="Comment">Ocena:</label>
+            <select id="ratingbar" asp-for="Rate">
+                <option value="1" selected="selected">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+            <div class="text-center"><span class="text-danger w-100" asp-validation-for="Rate"></span></div>
+        </div>
+        <div class="form-group w-50 mx-auto">
+            <label asp-for="Comment">Opinia:</label>
+            <textarea class="form-control" id="review" rows="3" placeholder="Twoje zdanie na temat produktu..." asp-for="Comment"></textarea>
+            <div class="text-center"><span class="text-danger w-100" asp-validation-for="Comment"></span></div>
+        </div>
+        <div class="form-group w-50 mx-auto">
+            <label asp-for="AuthorName">Autor:</label>
+            <input class="form-control" placeholder="Twoja nazwa" asp-for="AuthorName" />
+            <div class="text-center"><span class="text-danger w-100" asp-validation-for="AuthorName"></span></div>
+        </div>
+        <div class="form-group  w-50 mx-auto">
+            <input type="hidden" class="form-control" name="ProductId" value="@ViewData["ProductId"]">
+        </div>
+        <button class="mt-2 btn btn-secondary one-width" type="submit">
+            <span id="btn-cart">
+                Dodaj opinie
+            </span>
+        </button>
+    </form>
+</div>

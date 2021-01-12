@@ -18,4 +18,3 @@ $(function () {
         theme: 'fontawesome-stars'
     });
 });
-

@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using OnlineStore.Repositories;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using OnlineStore.Data;
+using OnlineStore.Models.Shop;
+using OnlineStore.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,16 +12,46 @@ using X.PagedList;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using OnlineStore.Models;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 
 namespace OnlineStore.Controllers
 {
     public class ShopController : Controller
     {
         private readonly IProductRepository productRepository;
-        public ShopController(IProductRepository productRepository)
+        private readonly IReviewRepository reviewRepository;
+
+        public ShopController(IProductRepository productRepository, IReviewRepository reviewRepository)
         {
             this.productRepository = productRepository;
+            this.reviewRepository = reviewRepository;
         }
+
+        [HttpGet]
+        public IActionResult Index() => View();
+
+        [Route("[controller]/[action]/{id}")]
+        [Route("[controller]/[action]/{id}/reviews", Name = "ShopDetailsReviews")]
+        [HttpGet]
+        public async Task<IActionResult> Details(int id, int pageNumber = 1, int pageSize = 10)
+        {
+            if (ModelState.IsValid)
+            {
+                var product = await productRepository.FindByIdAsync(id);
+                if (product != null)
+                {
+                    var reviews = await reviewRepository.GetByProductIdAsync(id, pageNumber, pageSize);
+                    var viewModel = new ShopDetailsViewModel
+                    {
+                        Product = product,
+                        Reviews = new StaticPagedList<Review>(reviews, pageNumber, pageSize, product.CountAll)
+                    };
+
+                    return View(viewModel);
+                }
+            }
+
+            return RedirectToAction(nameof(Index));
         
         [HttpGet]
         public async Task<IActionResult> Index([FromQuery] int? category,
@@ -33,12 +66,32 @@ namespace OnlineStore.Controllers
 
             return View(productList);
         }
-        public IActionResult Details()
-        {
-            return View();
-        }
 
         #region ApiMethods
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddReview([FromForm] AddReviewModel reviewDetails)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    await reviewRepository.AddAsync(new Review
+                    {
+                        Rate = reviewDetails.Rate,
+                        Comment = reviewDetails.Comment,
+                        AuthorName = reviewDetails.AuthorName,
+                        ProductId = reviewDetails.ProductId,
+                        UserId = int.Parse(User.FindFirst(ClaimTypes.Sid)?.Value)
+                    });
+                    return RedirectToRoute("ShopDetailsReviews", new { id = reviewDetails.ProductId });
+                }
+                catch (DbUpdateException) {}
+            }
+            return RedirectToAction(nameof(Details), new { id = reviewDetails.ProductId });
+        }
+
         [HttpGet]
         public async Task<IActionResult> SearchProducts([FromQuery] string name)
         {

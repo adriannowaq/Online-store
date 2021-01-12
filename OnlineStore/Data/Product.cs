@@ -1,4 +1,6 @@
-﻿namespace OnlineStore.Data
+﻿using System.Collections.Generic;
+
+namespace OnlineStore.Data
 {
     public class Product
     {
@@ -14,5 +16,6 @@
 
         public int ProductCategoryId { get; set; }
         public ProductCategory ProductCategory { get; set; }
+        public ICollection<Review> Reviews { get; set; }
     }
 }

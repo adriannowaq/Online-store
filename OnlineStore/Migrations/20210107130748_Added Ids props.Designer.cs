@@ -9,8 +9,8 @@ using OnlineStore.Data;
 namespace OnlineStore.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20201229234916_Add order")]
-    partial class Addorder
+    [Migration("20210107130748_Added Ids props")]
+    partial class AddedIdsprops
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -59,7 +59,7 @@ namespace OnlineStore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<bool>("Close")
+                    b.Property<bool>("Ordered")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<int?>("UserId")
@@ -96,6 +96,28 @@ namespace OnlineStore.Migrations
                     b.ToTable("CartItems");
                 });
 
+            modelBuilder.Entity("OnlineStore.Data.Invoice", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("InvoiceNumber")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("Invoices");
+                });
+
             modelBuilder.Entity("OnlineStore.Data.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -127,6 +149,12 @@ namespace OnlineStore.Migrations
                     b.Property<bool>("Available")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<string>("CloudStorageImageName")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("CloudStorageImageUrl")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
                     b.Property<int>("Count")
                         .HasColumnType("int");
 
@@ -142,7 +170,7 @@ namespace OnlineStore.Migrations
                     b.Property<string>("Producer")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<int?>("ProductCategoryId")
+                    b.Property<int>("ProductCategoryId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -166,7 +194,7 @@ namespace OnlineStore.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductCategories");
+                    b.ToTable("ProductsCategories");
                 });
 
             modelBuilder.Entity("OnlineStore.Data.Review", b =>
@@ -178,13 +206,16 @@ namespace OnlineStore.Migrations
                     b.Property<string>("Comment")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<int?>("ProductId")
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<int>("Rate")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -205,9 +236,6 @@ namespace OnlineStore.Migrations
                     b.Property<bool>("Active")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<bool>("Admin")
-                        .HasColumnType("tinyint(1)");
-
                     b.Property<string>("Email")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
@@ -220,6 +248,9 @@ namespace OnlineStore.Migrations
                     b.Property<string>("Phone")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
+
                     b.Property<string>("Surname")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
@@ -231,7 +262,7 @@ namespace OnlineStore.Migrations
             modelBuilder.Entity("OnlineStore.Data.Address", b =>
                 {
                     b.HasOne("OnlineStore.Data.User", "User")
-                        .WithMany("Address")
+                        .WithMany("Addresses")
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
@@ -261,6 +292,15 @@ namespace OnlineStore.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("OnlineStore.Data.Invoice", b =>
+                {
+                    b.HasOne("OnlineStore.Data.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId");
+
+                    b.Navigation("Order");
+                });
+
             modelBuilder.Entity("OnlineStore.Data.Order", b =>
                 {
                     b.HasOne("OnlineStore.Data.Cart", "Cart")
@@ -274,7 +314,9 @@ namespace OnlineStore.Migrations
                 {
                     b.HasOne("OnlineStore.Data.ProductCategory", "ProductCategory")
                         .WithMany("Products")
-                        .HasForeignKey("ProductCategoryId");
+                        .HasForeignKey("ProductCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("ProductCategory");
                 });
@@ -282,12 +324,16 @@ namespace OnlineStore.Migrations
             modelBuilder.Entity("OnlineStore.Data.Review", b =>
                 {
                     b.HasOne("OnlineStore.Data.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId");
+                        .WithMany("Reviews")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("OnlineStore.Data.User", "User")
                         .WithMany("Reviews")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Product");
 
@@ -299,6 +345,11 @@ namespace OnlineStore.Migrations
                     b.Navigation("CartItems");
                 });
 
+            modelBuilder.Entity("OnlineStore.Data.Product", b =>
+                {
+                    b.Navigation("Reviews");
+                });
+
             modelBuilder.Entity("OnlineStore.Data.ProductCategory", b =>
                 {
                     b.Navigation("Products");
@@ -306,7 +357,7 @@ namespace OnlineStore.Migrations
 
             modelBuilder.Entity("OnlineStore.Data.User", b =>
                 {
-                    b.Navigation("Address");
+                    b.Navigation("Addresses");
 
                     b.Navigation("Reviews");
                 });

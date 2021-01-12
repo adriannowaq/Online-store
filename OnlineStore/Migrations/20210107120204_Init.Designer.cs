@@ -9,8 +9,8 @@ using OnlineStore.Data;
 namespace OnlineStore.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210104041102_Added ProductCategoryId")]
-    partial class AddedProductCategoryId
+    [Migration("20210107120204_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -206,6 +206,9 @@ namespace OnlineStore.Migrations
                     b.Property<string>("Comment")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<int?>("ProductId")
                         .HasColumnType("int");
 
@@ -321,7 +324,7 @@ namespace OnlineStore.Migrations
             modelBuilder.Entity("OnlineStore.Data.Review", b =>
                 {
                     b.HasOne("OnlineStore.Data.Product", "Product")
-                        .WithMany()
+                        .WithMany("Reviews")
                         .HasForeignKey("ProductId");
 
                     b.HasOne("OnlineStore.Data.User", "User")
@@ -336,6 +339,11 @@ namespace OnlineStore.Migrations
             modelBuilder.Entity("OnlineStore.Data.Cart", b =>
                 {
                     b.Navigation("CartItems");
+                });
+
+            modelBuilder.Entity("OnlineStore.Data.Product", b =>
+                {
+                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("OnlineStore.Data.ProductCategory", b =>

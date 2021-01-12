@@ -1,8 +1,16 @@
-﻿
+﻿@model ShopDetailsViewModel
+@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Mvc.Bootstrap4.Core;
+@using System.Security.Claims;
 
 @section Styles{
     <link href="~/lib/jquery-bar-rating/dist/themes/fontawesome-stars.css" rel="stylesheet" />
     <link href="~/css/Shop/Details.css" rel="stylesheet" />
+}
+@{
+    ViewData["Title"] = Model.Product.Product.Name;
+    var reviewPage = (Context.Request.Path.ToString()).EndsWith("reviews");
 }
 
 
@@ -12,31 +20,58 @@
             <div class="col-md-6 col-sm-12">
                 <div class="card">
                     <div class="card-body">
-                        <img src="~/img/przykladowe.jpg" class="img-fluid" alt="" />
+                        <img src="@Model.Product.Product.CloudStorageImageUrl" class="img-fluid" alt="@Model.Product.Product.CloudStorageImageName" />
                     </div>
                 </div>
             </div>
             <div class="col-md-6 col-sm-12">
                 <div class="card">
                     <div class="card-body">
-                        <h4>Apple MacBook Pro M1/8GB/256/Mac OS Space Gray </h4>
+                        <h4>@Model.Product.Product.Name</h4>
+
                         <div class="grade-count mb-2">
                             <div>
-                                @for (int j = 0; j < 5; j++)
+                                @if (Model.Product.AverageRate == null)
                                 {
-                                    <i class="fas fa-star"></i>
+                                    <span>Brak opinii</span>
+                                }
+                                else
+                                {
+                                    @for (var j = 1; j <= Math.Round(Model.Product.AverageRate ?? 0); j++)
+                                    {
+                                        <i class="fas fa-star"></i>
+                                    }
+                                    @for (var j = Math.Round(Model.Product.AverageRate ?? 5); j < 5; j++)
+                                    {
+                                        <i class="far fa-star"></i>
+                                    }
                                 }
                             </div>
                         </div>
-                        <p>Ilość w magazynie: 2</p>
-                        <h3 class="mt-4">6666,66 zł</h3>
-                        <input type="number" name="num" value="1" min="1" max="999" class="form-control one-width" />
-                        <button class="mt-2 btn btn-secondary one-width" id="btn-addtocart">
-                            <span id="btn-cart">
-                                <i class="fas fa-lg fa-shopping-cart mr-2"></i>
-                                Dodaj do koszyka
-                            </span>
-                        </button>
+                        <p>Ilość w magazynie: @Model.Product.Product.Count</p>
+                        <h3 class="mt-4">@Math.Round(Model.Product.Product.Price, 2) zł</h3>
+                        @{
+                            if (Model.Product.Product.Available)
+                            {
+                                <input type="number" name="num" value="1" min="1" max="@Model.Product.Product.Count" class="form-control one-width" />
+                                <button class="mt-2 btn btn-secondary one-width" id="btn-addtocart">
+                                    <span id="btn-cart">
+                                        <i class="fas fa-lg fa-shopping-cart mr-2"></i>
+                                        Dodaj do koszyka
+                                    </span>
+                                </button>
+                            }
+                            else
+                            {
+                                <input type="number" name="num" value="0" min="0" max="0" class="form-control one-width" disabled />
+                                <button class="mt-2 btn btn-secondary one-width" id="btn-addtocart" disabled>
+                                    <span id="btn-cart">
+                                        <i class="fas fa-lg fa-shopping-cart mr-2"></i>
+                                        Dodaj do koszyka
+                                    </span>
+                                </button>
+                            }
+                        }
                     </div>
                 </div>
             </div>
@@ -44,85 +79,90 @@
 
         </div>
         <div class="row m-0 p-0" id="details-nav">
-            <div class="col-6 text-center  border border-right m-0 tile-active" id="description">
+            <div class="col-6 text-center  border border-right m-0 @(reviewPage ? "" : "tile-active")" id="description">
                 Opis produktu
             </div>
-            <div class="col-6 text-center  border border-left  m-0" id="reviews-panel">
-                Opinie użytkowników (5)
+            <div class="col-6 text-center  border border-left  m-0 @(reviewPage ? "tile-active" : "")" id="reviews-panel">
+                Opinie użytkowników (@Model.Reviews.TotalItemCount)
             </div>
         </div>
 
-        <div id="description-accordion">
+        <div id="description-accordion" class="@(reviewPage ? "d-none" : "")">
             <div class="col-12">
                 <div class="text-body text-justify p-5">
-                    @for (int i = 0; i < 4; i++)
-                    {
-                    
-                        <div class="mt-2">
-                            <h4>W 60 sekund dookoła Apple MacBook Pro M1</h4>
-                            <p class="text-secondary">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec elit in ex rutrum mattis. Nulla tristique dictum arcu, non tincidunt nisl convallis at. Ut lacinia leo sed aliquet fermentum. Pellentesque quis massa ac purus maximus lobortis. Pellentesque fringilla dignissim sagittis. Nam facilisis arcu eu ipsum sollicitudin elementum. Nulla cursus condimentum consequat. Curabitur volutpat, tortor eget sagittis ultrices, ex risus laoreet quam, vel sodales turpis lacus a magna. Vivamus ac lorem in metus euismod varius. Nullam et enim egestas, sodales arcu vel, dapibus ex.
-                            </p>
-                        </div>
-                    }
+                    @Html.Raw(Model.Product.Product.Description)
                 </div>
             </div>
         </div>
-
-        <div id="reviews-accordion" class="d-none">
+        
+        <div id="reviews-accordion" class="@(reviewPage ? "" : "d-none")">
             <div class="col-12  p-5 text-center">
-                <div class="add-review border-bottom mb-5 ">
-                    <h4 class="text-center">Dodaj swoją opinie</h4>
-                    <form class="mb-5">
-                        <div class="form-group ">
-                            <label for="ratingbar">Ocena:</label>
-                            <select id="ratingbar">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                            </select>
-                        </div>
-                        <div class="form-group w-50 mx-auto">
-                            <label for="review">Opinia:</label>
-                            @*<input type="text" class="form-control review-input" id="review" placeholder="Twoje zdanie na temat produktu...">*@
-                            <textarea class="form-control" id="review" rows="3" placeholder="Twoje zdanie na temat produktu..."></textarea>
-                        </div>
-
-                        <div class="form-group  w-50 mx-auto">
-                            <label for="name">Imie i nazwisko:</label>
-                            <input type="text" class="form-control" id="name" placeholder="Jan Kowalski">
-                        </div>
-                        <button class="mt-2 btn btn-secondary one-width">
-                            <span id="btn-cart">
-                                Dodaj opinie
-                            </span>
-                        </button>
-
-                    </form>
-                </div>
-                <div class="text-body text-justify">
-                    <h4 class="text-center">Opinie klientów</h4>
-                    @for (int i = 0; i < 5; i++)
+                @{
+                    if (User.Identity.IsAuthenticated)
                     {
 
-                        @for (int j = 0; j < 5; j++)
-                        {
-                            <i class="fas fa-star"></i>
-                        }
+                        @await Html.PartialAsync("Shop/AddReview",
+                            new AddReviewModel(),
+                            new ViewDataDictionary(ViewData) { { "ProductId", Model.Product.Product.Id } });
 
-                        <div class="my-2 border-bottom">
-                            <blockquote class="blockquote">
-                                <p class="mb-0">
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit facere voluptatem enim soluta eaque non molestias blanditiis adipisci excepturi praesentium!
-                                </p>
-                                <footer class="blockquote-footer">Janusz Macioszek</footer>
-                            </blockquote>
+                    }
+                    else
+                    {
+                        <div class="add-review mb-5 ">
+                            <h4 class="text-center">Aby dodać opinię musisz być zalogowany!</h4>
+                            <button class="mt-2 btn btn-secondary one-width" type="button" onclick="location.href = '@Url.Action("Login", "Account")'">
+                                <span id="btn-cart">
+                                    Zaloguj się!
+                                </span>
+                            </button>
                         </div>
                     }
+                }
+                <div class="text-body text-justify">
+                    <h4 class="text-center">Opinie klientów</h4>
+                    @{
+                        if (Model.Reviews.Count == 0)
+                        {
+                            <div class="my-2 border-bottom">
+                                <blockquote class="blockquote">
+                                    <p class="mb-0">
+                                        Brak opini na temat danego przedmiotu!
+                                    </p>
+                                </blockquote>
+                            </div>
+                        }
+                        else
+                        {
+                            foreach (var review in Model.Reviews)
+                            {
+
+                                @for (int j = 1; j <= review.Rate; j++)
+                                {
+                                    <i class="fas fa-star"></i>
+                                }
+                                @for (int j = review.Rate; j < 5; j++)
+                                {
+                                    <i class="far fa-star"></i>
+                                }
+                                <div class="my-2 border-bottom">
+                                    <blockquote class="blockquote">
+                                        <p class="mb-0">
+                                            @review.Comment
+                                        </p>
+                                        <footer class="blockquote-footer">@review.User.Name</footer>
+                                    </blockquote>
+                                </div>
+                            }
+                        }
+                    }
+
                 </div>
-                    </div>
+                @if (Model.Reviews.Count > 0)
+                {
+                    @Html.PagedListPager(Model.Reviews, page => Url.Action(nameof(ShopController.Details), new { id = Model.Product.Product.Id, pageNumber = page }), Bootstrap4PagedListRenderOptions.ClassicPlusFirstAndLast);
+                }
+            </div>
+
         </div>
     </div>
 
@@ -131,7 +171,7 @@
 
 
 @section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="~/js/Shop/details.js"></script>
     <script src="~/lib/jquery-bar-rating/jquery.barrating.js"></script>
-
 }

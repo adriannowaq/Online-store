@@ -7,6 +7,7 @@ using OnlineStore.Infrastructure.Extensions;
 using OnlineStore.Infrastructure.Services;
 using OnlineStore.Models.Account.Admin;
 using OnlineStore.Models.Shop;
+using OnlineStore.Repositories.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,16 +20,19 @@ namespace OnlineStore.Repositories
         private readonly AppDbContext dbContext;
         private readonly ICloudStorageService cloudStorageService;
         private readonly IHtmlSanitizationService htmlSanitizationService;
+        private readonly IReviewRepository reviewRepository;
         private readonly LinkGenerator linkGenerator;
 
-        public ProductRepository(AppDbContext dbContext, 
+        public ProductRepository(AppDbContext dbContext,
                                 ICloudStorageService cloudStorageService,
                                 IHtmlSanitizationService htmlSanitizationService,
-                                LinkGenerator linkGenerator)
+                                LinkGenerator linkGenerator,
+                                IReviewRepository reviewRepository)
         {
             this.dbContext = dbContext;
             this.cloudStorageService = cloudStorageService;
             this.htmlSanitizationService = htmlSanitizationService;
+            this.reviewRepository = reviewRepository;
             this.linkGenerator = linkGenerator;
         }
 
@@ -39,13 +43,13 @@ namespace OnlineStore.Repositories
             var product = new Product()
             {
                 Name = productDetails.Name,
-                Producer = productDetails.Producer, 
-                Price = productDetails.Price, 
-                Description = sanitizeHtml, 
+                Producer = productDetails.Producer,
+                Price = productDetails.Price,
+                Description = sanitizeHtml,
                 CloudStorageImageName = cloudResult.FileName,
-                CloudStorageImageUrl = cloudResult.FileUrl, 
-                Count = productDetails.Count, 
-                ProductCategoryId = productDetails.ProductCategory 
+                CloudStorageImageUrl = cloudResult.FileUrl,
+                Count = productDetails.Count,
+                ProductCategoryId = productDetails.ProductCategory
             };
 
             await dbContext.AddAsync(product);
@@ -101,6 +105,20 @@ namespace OnlineStore.Repositories
                         nameof(ShopController).RemoveController(), new { p.Id })
                 })
                 .ToList();
+        }
+
+        public Task<ProductModel> FindByIdAsync(int id)
+        {
+            return (from p in dbContext.Products
+                    where p.Id == id
+                    let count = dbContext.Reviews.Where(r => r.ProductId == id).Count()
+                    let average = dbContext.Reviews.Where(r => r.ProductId == id).Select(r => r.Rate).Average()
+                    select new ProductModel
+                    {
+                        Product = p,
+                        CountAll = count,
+                        AverageRate = average
+                    }).FirstOrDefaultAsync();
         }
     }
 }

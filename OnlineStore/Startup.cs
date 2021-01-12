@@ -41,6 +41,7 @@ namespace OnlineStore
                     serverVersion: new MySqlServerVersion(new Version(8, 0, 22))));
 
             var googleCloudSettings = Configuration.GetSection("GoogleCloudSettings");
+            var test = File.ReadAllText(googleCloudSettings.GetSection("CredentialFile").Value);
             services.AddOptions<GoogleCloudSettings>().Configure(c =>
                 {
                     c.StorageBucket = googleCloudSettings.GetSection("StorageBucket").Value;
@@ -52,6 +53,7 @@ namespace OnlineStore
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IReviewRepository, ReviewRepository>();
             services.AddHttpContextAccessor();
             services.AddRecaptcha(Configuration.GetSection("RecaptchaSettings"));
         }
