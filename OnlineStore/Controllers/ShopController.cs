@@ -21,9 +21,6 @@ namespace OnlineStore.Controllers
             this.reviewRepository = reviewRepository;
         }
 
-        [HttpGet]
-        public IActionResult Index() => View();
-
         [Route("[controller]/[action]/{id}")]
         [Route("[controller]/[action]/{id}/reviews", Name = "ShopDetailsReviews")]
         [HttpGet]
