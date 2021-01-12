@@ -20,17 +20,25 @@ header {
 #menu a{
    margin: 0 20px;
 }
-.bg-light {
-    background: none !important;
+.bg-dark {
+    background: #777777 !important;
+}
+.navbar-dark .navbar-nav .nav-link, .navbar-dark .navbar-brand {
+    color: #fff;
+    text-shadow: 0 0 1em rgba(0,0,0,0.5);
 }
 
-.navbar-light .navbar-nav .nav-link:hover, .navbar-light .navbar-nav .nav-link.active{
+
+.navbar-light .navbar-nav .nav-link:hover, .navbar-light .navbar-nav .nav-link.active {
     text-decoration: underline;
     text-decoration-style: solid;
     font-weight: 900;
     color: black;
+    
 }
-
+.navbar-light .navbar-nav .nav-link {
+    text-shadow: 0 0 1em rgba(0,0,0,0.1);
+}
 .navbar img {
     height: 24px;
     vertical-align: middle;
@@ -83,20 +91,29 @@ header {
 }
 .zoom {
     transition: transform .2s;
+    position: relative;
+    height: 320px;
+    text-align: center;
+    border: 1px solid #ebebeb;
+    padding-top:20px;
+    margin:0;
 }
 .zoom a{
     zoom: 1;
-    color: black;
     text-decoration: none;
+    
 }
-    .zoom:hover {
-        background-color: white;
-        border: 1px solid #ebebeb;
-        position: relative;
-        transform: scale(1.03);
-        z-index: 1;
-        box-shadow: 0 0 1em rgba(0,0,0,0.5);
-    }
+.zoom h6 {
+    color: black;
+}
+.zoom:hover {
+    background-color: white;
+    border: 1px solid #ebebeb;
+    position: relative;
+    transform: scale(1.03);
+    z-index: 1;
+    box-shadow: 0 0 1em rgba(0,0,0,0.5);
+}
 .carousel-inner .row {
     border: 1px solid #ebebeb;
 }
@@ -107,8 +124,33 @@ header {
     width: 100%;
     height: 100%;
 }
-.search-input {
-    background-clip: unset;
-    height: auto;
-    width: 12rem;
+#search-bar {
+    text-align: center;
+    font-size: 14px;
+    border-radius: 0px;
+    border: none;
+    width: 300px;
+    text-transform: uppercase;
+    font-weight: bold;
+    border-radius: 5px;
+    box-shadow: 0 0 1em rgba(0,0,0,0.5);
+}
+
+#search-bar:focus {
+    border: none;
+    outline: none;
+}
+
+.active-category {
+    text-decoration: underline;
+}
+
+.addtocart-in-zoom {
+    position: absolute;
+    bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    text-align: center;
 }

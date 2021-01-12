@@ -1,9 +1,23 @@
 ﻿@using X.PagedList;
 @using X.PagedList.Mvc.Core;
 @using X.PagedList.Mvc.Bootstrap4.Core;
+@using OnlineStore.Infrastructure.Extensions;
+
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+
 @{
     ViewData["Title"] = "Sklep";
 }
+@model StaticPagedList<Product>
+
+@functions{
+    public string GetAntiXsrfRequestToken()
+    {
+        return Xsrf.GetAndStoreTokens(Context).RequestToken;
+    }
+}
+
+<input type="hidden" id="RequestVerificationToken" name="RequestVerificationToken" value="@GetAntiXsrfRequestToken()">
 
 <div class="container">
     <div class="row">
@@ -15,15 +29,38 @@
                             <span>Sortowanie</span>
                         </div>
                     </div>
-                    <div>
-                        <h5 class="mt-1">Cena</h5>
-                        <select class="form-control" id="price" style="width: 80%; text-align:center; margin:auto;">
-                            <option>Najwyższa</option>
-                            <option>Najniższa</option>
-                        </select>
-                        <br />
+
+                    <div class="text-center my-2">
+                        <form asp-action="Index" asp-controller="Shop" method="get" onchange="submit()">
+                            @foreach (var item in Context.GetQueryParameters())
+                            {
+                                @if (!item.Key.Equals("order"))
+                                {
+                                    <input type="text" name="@item.Key" value="@item.Value" hidden />
+                                }
+                            }
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="order1" name="order" value="0" checked>
+                                <label class="form-check-label" for="order1">
+                                    Kolejność dodania
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="order2" name="order" value="1">
+                                <label class="form-check-label" for="order2">
+                                    Cena rosnąco
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="order3" name="order" value="2">
+                                <label class="form-check-label" for="order3">
+                                    Cena malejąco
+                                </label>
+                            </div>
+                        </form>
+
                     </div>
-                    <button class="btn btn-success mb-2" type="submit">Szukaj</button>
+
                 </div>
             </div>
             <div class="mt-4">
@@ -33,27 +70,53 @@
         <div class="col-lg-9">
             <div class="product-list">
                 <div class="row">
-                    @for (int i = 1; i <= 10; i++)
+                    @foreach (var product in Model)
                     {
                         <div class="col-lg-4 zoom">
-                            <a href="#">
+                            <a href="@Url.Action("Details", "Shop",  new { product.Id })">
                                 <div class="product mx-auto">
-                                    <img src="~/img/product.jpg" class="img-fluid mx-auto d-block" />
-                                    <div class="product-description">
-                                        <h6>Produkt @i</h6>
-                                        <h5>@i.00 zł</h5>
-                                        <a href="#"><i class="fa fa-shopping-cart"></i> Dodaj do koszyka</a>
+                                    <img src="@product.CloudStorageImageUrl" class="img-fluid mx-auto d-block" />
+                                    <div class="product-description mt-2">
+                                        <h6>@product.Name</h6>
+
+
                                     </div>
                                 </div>
                             </a>
+
+                            <div class="addtocart-in-zoom">
+                                <h5 class="font-weight-bold">@Math.Round(product.Price, 2) zł</h5>
+                                <button data-product-id="@product.Id" data-price="@product.Price" data-product-name="@product.Name" class="mx-auto btn btn-secondary one-width btn-addtocart">
+                                    <span>
+                                        <i class="fas fa-lg fa-shopping-cart mr-2"></i>
+                                        Dodaj do koszyka
+                                    </span>
+                                    <div class="spinner-border d-none" role="status">
+                                        <span class="sr-only">Loading...</span>
+                                    </div>
+                                </button>
+                            </div>
+
                         </div>
                     }
                 </div>
             </div>
+            @Html.PagedListPager(Model, page => Url.Action("", new { category = Context.Request.Query["category"], order = Context.Request.Query["order"], page }), Bootstrap4PagedListRenderOptions.ClassicPlusFirstAndLast)
+
         </div>
+        
     </div>
 </div>
 
 @section Styles {
     <link href="~/css/Shop/Index.min.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist/css/toast.css" rel="stylesheet" />
 }
+@section Scripts{
+    <script src="~/js/Shop/index.js"></script>
+    <script src="~/lib/bootstrap/dist/js/toast.js"></script>
+    <script type="text/javascript">
+        addApiUrl("addProductToCart", "@Url.Action(nameof(ShopController.AddItemToCart))");
+    </script>
+}
+

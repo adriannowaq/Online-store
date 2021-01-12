@@ -52,6 +52,35 @@ namespace OnlineStore.Repositories
             await dbContext.SaveChangesAsync();
         }
 
+        public Task<int> CountProductsAsync(int? category)
+        {
+            if (category != null)
+                return dbContext.Products.Where(p => p.ProductCategoryId == category).CountAsync();
+
+            return dbContext.Products.CountAsync();
+        }
+
+        public Task<List<Product>> GetProductsPerPageAsync(int? category, int page, int pageSize, int order)
+        {
+            IQueryable<Product> products = dbContext.Products;
+
+            if (order == 1)
+            {
+                products = products.OrderBy(p=>p.Price);
+            }
+            else if (order == 2)
+            {
+                products = products.OrderByDescending(p => p.Price);
+            }
+
+            if (category != null)
+                products = products.Where(p => p.ProductCategoryId == category);
+
+
+            return products.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+        }
+
+
         public async Task<List<SearchProductsModel>> SearchProductsByLettersAsync(string letters, int limit = 10)
         {
             return (await dbContext.Products

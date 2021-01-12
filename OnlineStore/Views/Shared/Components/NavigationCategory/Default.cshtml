@@ -1,4 +1,7 @@
 ﻿@model List<ProductCategory>
+@{ 
+    var categoryFromController = ViewBag.CategoryId;
+}
 
 <div class="categories">
     <div class="category">
@@ -7,7 +10,8 @@
     <ul class="no-dots">
         @foreach (var category in Model)
         {
-            <li><a href="#">@category.Name</a></li>
+            <li class="@(categoryFromController == category.Id ? "active-category" : "")"><a href="@Url.Action( "Index", "Shop", new { category=category.Id})">@category.Name</a></li>
         }
     </ul>
 </div>
+

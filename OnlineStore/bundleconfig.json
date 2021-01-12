@@ -48,5 +48,17 @@
     "inputFiles": [
       "wwwroot/js/apiUrls.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/lib/bootstrap/dist/css/toast.min.css",
+    "inputFiles": [
+      "wwwroot/lib/bootstrap/dist/css/toast.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/lib/bootstrap/dist/js/toast.min.js",
+    "inputFiles": [
+      "wwwroot/lib/bootstrap/dist/js/toast.js"
+    ]
   }
 ]
