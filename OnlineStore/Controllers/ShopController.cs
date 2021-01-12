@@ -4,14 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using OnlineStore.Data;
 using OnlineStore.Models.Shop;
 using OnlineStore.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using X.PagedList;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using OnlineStore.Models;
-using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 
 namespace OnlineStore.Controllers
@@ -52,6 +46,7 @@ namespace OnlineStore.Controllers
             }
 
             return RedirectToAction(nameof(Index));
+        }
         
         [HttpGet]
         public async Task<IActionResult> Index([FromQuery] int? category,
