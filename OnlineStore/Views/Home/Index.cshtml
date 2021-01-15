@@ -1,106 +1,111 @@
-﻿<div class="container">
+﻿@using OnlineStore.Models.Home;
+
+@model HomeViewModel
+
+@{
+    ViewData["Title"] = "Strona Głowna";
+    var counter = 0;
+}
+@section Styles{ 
+    <link href="~/css/Home/Index.css" rel="stylesheet" />
+}
+
+<div class="container">
     <div class="row">
         <div class="col-lg-3">
             @await Component.InvokeAsync("NavigationCategory")
         </div>
         <div class="col-lg-9">
+            <div class="row">
+                <div class="col-lg-12 border-top border-left border-right">
+                    <h5 class="text-center font-weight-bold my-2">Najczęściej kupowane przedmioty</h5>
+                </div>
+            </div>
+            
+            
             <div class="product-list">
                 <div class="row">
-                    @for (int i = 1; i <= 9; i++)
+                    @foreach (var product in Model.Products)
                     {
-                        <div class="col-lg-4 zoom">
-                            <a href="#">
+                        <div class="col-lg-3 productdiv">
+                            <a href="@Url.Action("Details", "Shop",  new { product.Id })">
                                 <div class="product mx-auto">
-                                    <img src="~/img/product.jpg" class="img-fluid mx-auto d-block" />
-                                    <div class="product-description">
-                                        <h6>Produkt @i</h6>
-                                        <h5>@i.00 zł</h5>
+                                    <img src="@product.CloudStorageImageUrl" class="img-fluid mx-auto d-block" />
+                                    <div class="product-description mt-2">
+                                        <h6>@product.Name</h6>
                                     </div>
                                 </div>
                             </a>
+                            <div class="price-in-productdiv">
+                                <h5 class="font-weight-bold">@Math.Round(product.Price, 2) zł</h5>
+                            </div>
                         </div>
+
                     }
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="row mt-5">
-        <div class="col-lg-1 w-100 d-flex justify-content-center align-content-center flex-wrap" style="padding:0; border: 1px solid #ebebeb;">
-            <a href="#carouselControls" class="carousel-link" data-slide="prev"><i style="position: relative;" class="fas fa-chevron-left fa-3x"></i></a>
-        </div>
-        <div class="col-lg-10" style="padding:0;">
-            <div id="carouselControls" class="carousel slide" data-ride="carousel">
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Special title treatment</h5>
-                                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Special title treatment</h5>
-                                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Special title treatment</h5>
-                                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    @for (int i = 0; i < 2; i++)
-                    {
-                        <div class="carousel-item">
-                            <div class="row">
-                                <div class="col-lg-4">
-                                    <div class="card h-100">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Special  treatment</h5>
-                                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                                            <a href="#" class="btn btn-primary">Go somewhere</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="card h-100">
-                                        <div class="card-body">
-                                            <h5 class="card-title"> title treatment</h5>
-                                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                                            <a href="#" class="btn btn-primary">Go somewhere</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="card h-100">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Special title </h5>
-                                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                                            <a href="#" class="btn btn-primary">Go somewhere</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    }
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-1 w-100 d-flex justify-content-center align-content-center flex-wrap" style="padding: 0; border: 1px solid #ebebeb">
-            <a href="#carouselControls" class="carousel-link" data-slide="next"><i style="position: relative;" class="fas fa-chevron-right fa-3x"></i></a>
         </div>
     </div>
 </div>
+<div class="row mt-5">
+    <div class="col-lg-12 border-top border-left border-right">
+        <h5 class="text-center font-weight-bold my-2">Ostatnie opinie klientów</h5>
+    </div>
+    <div class="col-1 w-100 d-flex justify-content-center align-content-center flex-wrap" style="padding:0; border: 1px solid #ebebeb;">
+        <a href="#carouselControls" class="carousel-link" data-slide="prev"><i style="position: relative;" class="fas fa-chevron-left fa-3x"></i></a>
+    </div>
+    <div class="col-10" style="padding:0;">
+        <div id="carouselControls" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+
+                @for (int i = 0; i < 3; i++)
+                {
+                        <div class="carousel-item @(i==0?"active":"")">
+                            <div class="row text-center">
+                                @if (Model.Reviews==null)
+                                {
+                                <div class="col-12 review-div">
+                                    <h5 class="text-center font-weight-bold my-2">Brak opinii do wyświetlenia</h5>
+                                </div>
+                                }
+                                else
+                                {
+                                    @for (int j = 0; j < 3; j++)
+                                    {
+                                        <div class="col-4 review-div">
+                                            <div class="review-product mt-2">
+                                                <a href="@Url.Action("Details", "Shop",  new { Id=Model.Reviews[counter].ProductId })">@Model.Reviews[counter].Product.Name</a>
+                                            </div>
+
+                                            @for (int k = 1; k <= Model.Reviews[counter].Rate; k++)
+                                            {
+                                                <i class="fas fa-star star-color"></i>
+                                            }
+                                            @for (int k = Model.Reviews[counter].Rate; k < 5; k++)
+                                            {
+                                                <i class="far fa-star empty-star-color"></i>
+                                            }
+                                            <div class="my-2">
+                                                <blockquote class="blockquote">
+                                                    <p class="review-comment mt2-">
+                                                        <strong>@Model.Reviews[counter].AuthorName</strong>: @Model.Reviews[counter].Comment
+                                                    </p>
+
+                                                </blockquote>
+                                            </div>
+                                        </div>
+                                        counter++;
+                                    }
+                                }
+
+                            </div>
+                    </div>
+                    }
+                </div>
+        </div>
+    </div>
+    <div class="col-1 w-100 d-flex justify-content-center align-content-center flex-wrap" style="padding: 0; border: 1px solid #ebebeb">
+        <a href="#carouselControls" class="carousel-link" data-slide="next"><i style="position: relative;" class="fas fa-chevron-right fa-3x"></i></a>
+    </div>
+</div>
+

@@ -8,6 +8,7 @@ namespace OnlineStore.Repositories
     {
         Task<int> CountByProductIdAsync(int id);
         Task<List<Review>> GetByProductIdAsync(int id, int pageNumber, int pageSize);
+        Task<List<Review>> GetLatestReviewsAsync(int limit);
         Task AddAsync(Review review);
     }
 }

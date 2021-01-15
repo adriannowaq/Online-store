@@ -64,7 +64,8 @@ namespace OnlineStore.Repositories
             return dbContext.Products.CountAsync();
         }
 
-        public Task<List<Product>> GetProductsPerPageAsync(int? category, int page, int pageSize, int order)
+        public Task<List<Product>> GetProductsPerPageAsync(int? category, 
+            int page, int pageSize, int order)
         {
             IQueryable<Product> products = dbContext.Products;
 
@@ -84,8 +85,8 @@ namespace OnlineStore.Repositories
             return products.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
         }
 
-
-        public async Task<List<SearchProductsModel>> SearchProductsByLettersAsync(string letters, int limit = 10)
+        public async Task<List<SearchProductsModel>> SearchProductsByLettersAsync(string letters, 
+            int limit = 10)
         {
             return (await dbContext.Products
                 .Where(p => p.Name.Contains(letters, StringComparison.OrdinalIgnoreCase))
@@ -119,6 +120,11 @@ namespace OnlineStore.Repositories
                         CountAll = count,
                         AverageRate = average
                     }).FirstOrDefaultAsync();
+        }
+
+        public Task<List<Product>> GetMostPopularProductsAsync()
+        {
+            return dbContext.Products.Take(8).ToListAsync();
         }
     }
 }

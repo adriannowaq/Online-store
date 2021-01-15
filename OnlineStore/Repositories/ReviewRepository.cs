@@ -37,5 +37,14 @@ namespace OnlineStore.Repositories
             dbContext.Reviews.Add(review);
             return dbContext.SaveChangesAsync();
         }
+
+        public Task<List<Review>> GetLatestReviewsAsync(int limit)
+        {
+            return dbContext.Reviews
+                .OrderByDescending(r => r.Date)
+                .Take(limit)
+                .Include(r => r.Product)
+                .ToListAsync();
+        }
     }
 }

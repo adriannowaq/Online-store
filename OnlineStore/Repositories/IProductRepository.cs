@@ -14,5 +14,6 @@ namespace OnlineStore.Repositories
         Task<List<SearchProductsModel>> SearchProductsByLettersAsync(string letters, int limit = 10);
         Task<List<Product>> GetProductsPerPageAsync(int? category, int page, int itemsCount, int order);
         Task<int> CountProductsAsync(int? category);
+        Task<List<Product>> GetMostPopularProductsAsync();
     }
 }

@@ -1,4 +1,5 @@
-﻿.product-description {
+﻿
+.product-description {
     text-align: center;
 }
 
@@ -78,3 +79,4 @@
 .page-link:hover{
     color:#000;
 }
+
