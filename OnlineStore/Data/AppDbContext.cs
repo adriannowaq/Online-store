@@ -14,6 +14,7 @@ namespace OnlineStore.Data
         public DbSet<Review> Reviews { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderProduct> OrdersProducts { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductCategory> ProductsCategories { get; set; }
         public DbSet<Invoice> Invoices { get; set; }
