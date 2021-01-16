@@ -11,4 +11,5 @@ namespace OnlineStore.Repositories
         Task<List<Review>> GetLatestReviewsAsync(int limit);
         Task AddAsync(Review review);
     }
+   
 }

@@ -1,4 +1,5 @@
 ﻿using OnlineStore.Data;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace OnlineStore.Repositories
@@ -9,5 +10,6 @@ namespace OnlineStore.Repositories
         Task SignOutAsync();
         Task<bool> CheckEmailExistsAsync(string email);
         Task<bool> CreateAccountAsync(string email, string password, UserRole role = UserRole.None);
+        Task<Address> FindDeliveryAddressAsync(int userId);
     }
 }

@@ -60,5 +60,11 @@
     "inputFiles": [
       "wwwroot/lib/bootstrap/dist/js/toast.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/css/Cart/Index.min.css",
+    "inputFiles": [
+      "wwwroot/css/Cart/Index.css"
+    ]
   }
 ]

@@ -4,15 +4,26 @@
 @using X.PagedList.Mvc.Bootstrap4.Core;
 @using System.Security.Claims;
 
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+
+
 @section Styles{
     <link href="~/lib/jquery-bar-rating/dist/themes/fontawesome-stars.css" rel="stylesheet" />
     <link href="~/css/Shop/Details.css" rel="stylesheet" />
 }
 @{
-    ViewData["Title"] = Model.Product.Product.Name;
+    ViewData["Title"] = Model.Details.Product.Name;
     var reviewPage = (Context.Request.Path.ToString()).EndsWith("reviews");
 }
 
+@functions{
+    public string GetAntiXsrfRequestToken()
+    {
+        return Xsrf.GetAndStoreTokens(Context).RequestToken;
+    }
+}
+
+<input type="hidden" id="RequestVerificationToken" name="RequestVerificationToken" value="@GetAntiXsrfRequestToken()">
 
 <div class="container">
     <div class="borderbox">
@@ -20,45 +31,48 @@
             <div class="col-md-6 col-sm-12">
                 <div class="card">
                     <div class="card-body">
-                        <img src="@Model.Product.Product.CloudStorageImageUrl" class="img-fluid" alt="@Model.Product.Product.CloudStorageImageName" />
+                        <img src="@Model.Details.Product.CloudStorageImageUrl" class="img-fluid" alt="@Model.Details.Product.CloudStorageImageName" />
                     </div>
                 </div>
             </div>
             <div class="col-md-6 col-sm-12">
                 <div class="card">
                     <div class="card-body">
-                        <h4>@Model.Product.Product.Name</h4>
+                        <h4>@Model.Details.Product.Name</h4>
 
                         <div class="grade-count mb-2">
                             <div>
-                                @if (Model.Product.AverageRate == null)
+                                @if (Model.Details.AverageRate == null)
                                 {
                                     <span>Brak opinii</span>
                                 }
                                 else
                                 {
-                                    @for (var j = 1; j <= Math.Round(Model.Product.AverageRate ?? 0); j++)
+                                    @for (var j = 1; j <= Math.Round(Model.Details.AverageRate ?? 0); j++)
                                     {
                                         <i class="fas fa-star"></i>
                                     }
-                                    @for (var j = Math.Round(Model.Product.AverageRate ?? 5); j < 5; j++)
+                                    @for (var j = Math.Round(Model.Details.AverageRate ?? 5); j < 5; j++)
                                     {
                                         <i class="far fa-star"></i>
                                     }
                                 }
                             </div>
                         </div>
-                        <p>Ilość w magazynie: @Model.Product.Product.Count</p>
-                        <h3 class="mt-4">@Math.Round(Model.Product.Product.Price, 2) zł</h3>
+                        <p>Ilość w magazynie: @Model.Details.Product.Count</p>
+                        <h3 class="mt-4">@Math.Round(Model.Details.Product.Price, 2) zł</h3>
                         @{
-                            if (Model.Product.Product.Available)
+                            if (Model.Details.Product.Available)
                             {
-                                <input type="number" name="num" value="1" min="1" max="@Model.Product.Product.Count" class="form-control one-width" />
-                                <button class="mt-2 btn btn-secondary one-width" id="btn-addtocart">
+                                <input type="number" name="num" value="1" min="1" max="@Model.Details.Product.Count" class="form-control one-width" />
+                                <button data-product-id="@Model.Details.Product.Id" data-price="@Model.Details.Product.Price" data-product-name="@Model.Details.Product.Name" class="mt-2 btn btn-secondary one-width" id="btn-addtocart">
                                     <span id="btn-cart">
                                         <i class="fas fa-lg fa-shopping-cart mr-2"></i>
                                         Dodaj do koszyka
                                     </span>
+                                    <div class="spinner-border d-none" role="status">
+                                        <span class="sr-only">Loading...</span>
+                                    </div>
                                 </button>
                             }
                             else
@@ -90,11 +104,11 @@
         <div id="description-accordion" class="@(reviewPage ? "d-none" : "")">
             <div class="col-12">
                 <div class="text-body text-justify p-5">
-                    @Html.Raw(Model.Product.Product.Description)
+                    @Html.Raw(Model.Details.Product.Description)
                 </div>
             </div>
         </div>
-        
+
         <div id="reviews-accordion" class="@(reviewPage ? "" : "d-none")">
             <div class="col-12  p-5 text-center">
                 @{
@@ -103,7 +117,7 @@
 
                         @await Html.PartialAsync("Shop/AddReview",
                             new AddReviewModel(),
-                            new ViewDataDictionary(ViewData) { { "ProductId", Model.Product.Product.Id } });
+                            new ViewDataDictionary(ViewData) { { "ProductId", Model.Details.Product.Id } });
 
                     }
                     else
@@ -149,7 +163,7 @@
                                         <p class="mb-0">
                                             @review.Comment
                                         </p>
-                                        <footer class="blockquote-footer">@review.User.Name</footer>
+                                        <footer class="blockquote-footer">@*@review.User.Name*@</footer>
                                     </blockquote>
                                 </div>
                             }
@@ -159,7 +173,7 @@
                 </div>
                 @if (Model.Reviews.Count > 0)
                 {
-                    @Html.PagedListPager(Model.Reviews, page => Url.Action(nameof(ShopController.Details), new { id = Model.Product.Product.Id, pageNumber = page }), Bootstrap4PagedListRenderOptions.ClassicPlusFirstAndLast);
+                    @Html.PagedListPager(Model.Reviews, page => Url.Action(nameof(ShopController.Details), new { id = Model.Details.Product.Id, pageNumber = page }), Bootstrap4PagedListRenderOptions.ClassicPlusFirstAndLast);
                 }
             </div>
 
@@ -172,6 +186,10 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script src="~/js/Shop/details.js"></script>
+<script src="~/js/Shop/details.js"></script>
+<script src="~/lib/bootstrap/dist/js/toast.js"></script>
     <script src="~/lib/jquery-bar-rating/jquery.barrating.js"></script>
+    <script type="text/javascript">
+        addApiUrl("addProductToCart", "@Url.Action(nameof(CartController.AddItem), nameof(CartController).RemoveController())");
+    </script>
 }

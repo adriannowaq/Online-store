@@ -1,0 +1,133 @@
+﻿@model Cart
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+
+@functions{
+    public string GetAntiXsrfRequestToken()
+    {
+        return Xsrf.GetAndStoreTokens(Context).RequestToken;
+    }
+}
+
+@{
+    ViewData["Title"] = "Koszyk";
+}
+
+<input type="hidden" id="RequestVerificationToken" name="RequestVerificationToken" value="@GetAntiXsrfRequestToken()">
+
+<div class="container">
+    <div class="row justify-content-center cart-list">
+        <div class="col-lg-12 d-flex justify-content-center cart-title">
+            <h2>Twoje itemy</h2>
+        </div>
+        <div class="col-lg-12">
+            <div class="list-group col-lg-12">
+                <div class="list-group-item no-border">
+                    <div class="row w-100 d-flex justify-content-center align-items-center">
+                        <div class="col-lg-3 d-flex justify-content-center">
+                            <h5><b>Zdjęcie produktu</b></h5>
+                        </div>
+                        <div class="col-lg-4 d-flex justify-content-center">
+                            <h5><b>Nazwa produktu</b></h5>
+                        </div>
+                        <div class="col-lg-2 d-flex justify-content-center">
+                            <h5><b>Ilość</b></h5>
+                        </div>
+                        <div class="col-lg-2 d-flex justify-content-center">
+                            <h5><b>Cena</b></h5>
+                        </div>
+                        <div class="col-lg-1 d-flex justify-content-center">
+                            <h5><b>Usuń</b></h5>
+                        </div>
+                    </div>
+                </div>
+                <div id="cart-items">
+                    @foreach (var cart in Model.CartItems)
+                    {
+                        <div class="list-group-item"
+                             data-item-id="@cart.ProductId"
+                             date-item-single-cost="@cart.Product.Price"
+                             data-item-summary-cost="@cart.Cost">
+                            <div class="row w-100 d-flex justify-content-center align-items-center">
+                                <div class="col-md-3 cart-image">
+                                    <img src="@cart.Product.CloudStorageImageUrl" class="img-fluid mx-auto d-block" />
+                                </div>
+                                <div class="col-md-4">
+                                    <b>@cart.Product.Name</b>
+                                </div>
+                                <div class="col-md-2 cart-count">
+                                    <div class="w-100 update-spinner text-center d-none">
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+                                    </div>
+                                    <input class="form-control item-number"
+                                           type="number"
+                                           value="@cart.Count"
+                                           min="1"
+                                           max="255"
+                                           step="1"
+                                           ata-container="body"
+                                           data-toggle="popover"
+                                           data-placement="top"
+                                           data-content="Wartość musi być większa niż 0, mniejsza niż 256 oraz nie być ułamkiem." />
+                                </div>
+                                <div class="col-md-2 d-flex justify-content-center align-items-center">
+                                    <h5><span class="item-cost">@cart.Cost.ToString("N2")</span> zł</h5>
+                                </div>
+                                <div class="col-md-1 d-flex justify-content-center align-items-center cart-remove">
+                                    <div class="spinner-border text-primary d-none" role="status">
+                                        <span class="sr-only">Loading...</span>
+                                    </div>
+                                    <i class="fas fa-trash fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12 cart-final">
+        <div class="col-lg-12 cart-final-price">
+            <h4>Razem do zapłaty: <span id="final-price">@Model.SummaryCost.ToString("N2")</span> zł</h4>
+        </div>
+        @if (Model.CartItems.Count > 0)
+        {
+            <div class="col-lg-12 cart-final-price">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div id="payment">
+                        <div class="spinner-border text-primary d-none" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                        <button type="submit" 
+                                class="btn btn-dark"
+                                 onclick="location.href = '@Url.Action(nameof(CartController.Payment))'"
+                        >
+                            Przejdź do zamówienia
+                        </button>
+                    </div>
+                }
+                else
+                {
+                    <button id="login" 
+                            type="submit" 
+                            class="btn btn-dark"  
+                            onclick="location.href = '@Url.Action(nameof(AccountController.Login),
+                                                        nameof(AccountController).RemoveController())'"
+                    >
+                        Zaloguj
+                    </button>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/Cart/index.js"></script>
+    <script type="text/javascript">
+        addApiUrl("cartDeleteItem", "@Url.Action(nameof(CartController.DeleteItem))");
+        addApiUrl("cartUpdateItem", "@Url.Action(nameof(CartController.UpdateItem))");
+    </script>
+}

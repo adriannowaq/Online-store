@@ -1,0 +1,99 @@
+﻿@model FinalizationViewModel
+
+@{
+    ViewData["Title"] = "Podsumowanie zamówienia";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12 mb-2 padding">
+            <h4><b>Podsumowanie zamówienia</b></h4>
+        </div>
+        <div class="col-lg-5 mr-2 details">
+            <div class="col-lg-12 d-flex align-items-center bgcolor"><h5>Dane wysyłkowe</h5></div>
+            <div class="col-lg-12">
+                <ul class="no-dots2">
+                    <li><b>Imię i nazwisko: @Model.Order.Name @Model.Order.Surname</b></li>
+                    <li>Miasto: @Model.Order.PostCode @Model.Order.City</li>
+                    <li>Ulica: @Model.Order.Street</li>
+                    <li>Numer budynku: @Model.Order.BuildingNumber</li>
+                    <li>Numer lokalu: @Model.Order.LocalNumber</li>
+                    <li>Telefon @Model.Order.Phone</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-lg-5 details">
+            <div class="col-lg-12 d-flex align-items-center bgcolor"><h5>Informacje</h5></div>
+            <div class="col-lg-12">
+                <ul class="no-dots2">
+                    <li>Płatność: <b>Zapłata przy odbiorze</b></li>
+                    <li>Dostawa: <b>Kurier</b></li>
+                </ul>
+            </div>
+        </div>
+        @*Item list*@
+        <div class="col-lg-12 mt-5 padding">
+            <div class="list-group col-lg-12">
+                <div class="list-group-item bgcolorlist">
+                    <div class="row w-100 d-flex justify-content-center align-items-center">
+                        <div class="col-lg-3 d-flex justify-content-center">
+                            <h5>Zdjęcie produktu</h5>
+                        </div>
+                        <div class="col-lg-3 d-flex justify-content-center">
+                            <h5>Nazwa produktu</h5>
+                        </div>
+                        <div class="col-lg-2 d-flex justify-content-center">
+                            <h5>Cena</h5>
+                        </div>
+                        <div class="col-lg-2 d-flex justify-content-center">
+                            <h5>Ilość</h5>
+                        </div>
+                        <div class="col-lg-2 d-flex justify-content-center">
+                            <h5>Suma</h5>
+                        </div>
+                    </div>
+                </div>
+                @foreach (var cartItem in Model.Cart.CartItems)
+                {
+                    <div class="list-group-item">
+                        <div class="row w-100 d-flex justify-content-center align-items-center">
+                            <div class="col-md-3 cart-image">
+                                <img src="@cartItem.Product.CloudStorageImageUrl" class="img-fluid mx-auto d-block" />
+                            </div>
+                            <div class="col-md-3 d-flex justify-content-center align-items-center">
+                                <b>@cartItem.Product.Name</b>
+                            </div>
+                            <div class="col-md-2 d-flex justify-content-center align-items-center">
+                                <h5>@cartItem.Product.Price.ToString("N") zł</h5>
+                            </div>
+                            <div class="col-md-2 d-flex justify-content-center align-items-center">
+                                @cartItem.Count
+                            </div>
+                            <div class="col-md-2 d-flex justify-content-center align-items-center">
+                                <h5>@cartItem.Cost.ToString("N") zł</h5>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        @*Final price*@
+        <div class="col-lg-12 d-flex justify-content-end">
+            <ul class="no-dots2">
+                <li>Wartość koszyka: @Model.Cart.SummaryCost.ToString("N") zł</li>
+                <li>Dostawa: 0 zł</li>
+                <li><b>Koszt całkowity: @Model.Cart.SummaryCost.ToString("N") zł</b></li>
+            </ul>
+        </div>
+        <div class="col-lg-12 d-flex justify-content-end">
+            <button type="submit" 
+                    class="btn btn-secondary"
+                    onclick="location.href = '@Url.Action(nameof(CartController.Payment))'"
+            >Powrót</button>
+            <form asp-action="@nameof(CartController.Finalization)" method="post">
+                <button type="submit" class="btn btn-dark ml-1">Zatwierdź</button>
+            </form>
+        </div>
+    </div>
+</div>
+

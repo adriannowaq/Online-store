@@ -1,0 +1,100 @@
+﻿@model AddAddressModel
+
+@{
+    ViewData["Title"] = "Sposób płatności";
+}
+
+<form asp-action="@nameof(CartController.Payment)" method="post">
+    <div class="jumbotron text-center">
+        <h2><b>Sposób płatności</b></h2>
+        <div class="form-row d-flex justify-content-center">
+            <div class="col-md-4 mb-3">
+                <label asp-for="PaymentMethod"><b>Rodzaj płatności</b></label>
+                <select asp-for="PaymentMethod" class="form-control">
+                    <option value="0" selected>Zapłata przy odbiorze</option>
+                </select>
+                <span class="text-danger w-100" asp-validation-for="PaymentMethod"></span>
+            </div>
+        </div>
+        <div class="form-row d-flex justify-content-center">
+            <div class="col-md-2 mb-3">
+                <label asp-for="Name"><b>Imię</b></label>
+                <input type="text" asp-for="Name" class="form-control" />
+                <span class="text-danger w-100" asp-validation-for="Name"></span>
+            </div>
+            <div class="col-md-2 mb-3">
+                <label asp-for="Surname"><b>Nazwisko</b></label>
+                <input type="text" asp-for="Surname" class="form-control" />
+                <span class="text-danger w-100" asp-validation-for="Surname"></span>
+            </div>
+        </div>
+        <div class="form-row d-flex justify-content-center">
+            <div class="col-md-2 mb-3">
+                <label asp-for="City"><b>Miasto</b></label>
+                <input type="text" asp-for="City" class="form-control" />
+                <span class="text-danger w-100" asp-validation-for="City"></span>
+            </div>
+            <div class="col-md-2 mb-3">
+                <label asp-for="Street"><b>Ulica</b></label>
+                <input type="text" asp-for="Street" class="form-control" />
+                <span class="text-danger w-100" asp-validation-for="Street"></span>
+            </div>
+        </div>
+        <div class="form-row d-flex justify-content-center">
+            <div class="col-md-2 mb-3">
+                <label asp-for="PostCode"><b>Kod pocztowy</b></label>
+                <input type="text" asp-for="PostCode" class="form-control" />
+                <span class="text-danger w-100" asp-validation-for="PostCode"></span>
+            </div>
+            <div class="col-md-2 mb-3">
+                <label asp-for="BuildingNumber"><b>Nr budynku</b></label>
+                <input type="text" asp-for="BuildingNumber" class="form-control" />
+                <span class="text-danger w-100" asp-validation-for="BuildingNumber"></span>
+            </div>
+        </div>
+        <div class="form-row d-flex justify-content-center">
+            <div class="col-md-2 mb-3">
+                <label asp-for="LocalNumber"><b>Nr lokalu</b></label>
+                <input type="text" asp-for="LocalNumber" class="form-control" />
+                <span class="text-danger w-100" asp-validation-for="LocalNumber"></span>
+            </div>
+            <div class="col-md-2 mb-3">
+                <label asp-for="Phone"><b>Numer telefonu</b></label>
+                <input type="text" asp-for="Phone" class="form-control" />
+                <span class="text-danger w-100" asp-validation-for="Phone"></span>
+            </div>
+        </div>
+        @if (ViewBag.addressExists == true)
+        {
+            <div class="form-check d-flex justify-content-center">
+                <div class="col-md-3">
+                    <input type="checkbox"
+                           id="address"
+                           class="form-check-input"
+                           data-url="@Url.Action(nameof(CartController.Payment),
+                                                        nameof(CartController).RemoveController(),
+                                                        new { address = true })"
+                           @(ViewBag.address == true ? "checked" : "") />
+                    <label class="form-check-label" for="address">Masz przypisany adres do konta, chcesz go użyć?</label>
+                </div>
+            </div>
+        }
+        <div class="form-row d-flex justify-content-center">
+            <div class="col-md-1 mt-3">
+                <button type="button" 
+                        class="btn btn-secondary"
+                        onclick="location.href='@Url.Action(nameof(CartController.Index),
+                                                        nameof(CartController).RemoveController())';"
+                >Powrót</button>
+            </div>
+            <div class="col-md-1 mt-3">
+                <button type="submit" class="btn btn-dark">Zatwierdź</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/Cart/payment.js"></script>
+} 

@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link href="~/css/site.min.css" rel="stylesheet" />
     <link href="~/lib/semantic-ui/components/search.min.css" rel="stylesheet" />
+    <link href="~/css/Cart/Index.min.css" rel="stylesheet" />
+    <link href="~/css/Cart/Finalization.min.css" rel="stylesheet" />
     <link href="~/lib/font-awesome/css/all.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
     @await RenderSectionAsync("Styles", required: false)
@@ -108,14 +110,7 @@
                            asp-controller="Contact"
                            asp-action="Index"
                            class="nav-item nav-link">Kontakt</a>
-                        <a route-active-controllers="Cart"
-                           route-active-actions="Index"
-                           asp-controller="Cart"
-                           asp-action="Index"
-                           class="nav-item nav-link">
-                            <i class="fas fa-lg fa-shopping-cart"></i>
-                            <span id="amount">0.00</span><span> zł</span>
-                        </a>
+                        @await Component.InvokeAsync("CartSummary")
                     </div>
                 </div>
             </div>
@@ -135,8 +130,8 @@
                     <div class="footer-about text-center">
                         <b>Brand</b>
                         <ul class="no-dots">
-                            <li>Adres: 61-895 Poznań Powstańców Wielkopolskich 5</li>
-                            <li>Numer telefonu: 654 982 988</li>
+                            <li>Adres:</li>
+                            <li>Numer telefonu:</li>
                             <li>E-mail: onlinestore@gmail.com</li>
                         </ul>
                     </div>

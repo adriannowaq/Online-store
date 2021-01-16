@@ -10,7 +10,7 @@ using OnlineStore.Infrastructure.Helpers;
 
 namespace XUnitTestOnlineStore
 {
-    public partial class ActiveTagHelperTests
+    public class ActiveTagHelperTests
     {
         [Theory]
         [ClassData(typeof(ActiveTagHelperTestsData))]

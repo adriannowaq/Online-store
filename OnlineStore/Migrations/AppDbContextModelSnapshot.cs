@@ -35,13 +35,22 @@ namespace OnlineStore.Migrations
                     b.Property<string>("LocalNumber")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
                     b.Property<string>("PostCode")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("Street")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<int?>("UserId")
+                    b.Property<string>("Surname")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -60,6 +69,9 @@ namespace OnlineStore.Migrations
                     b.Property<bool>("Ordered")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<string>("Token")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
 
@@ -76,13 +88,13 @@ namespace OnlineStore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int?>("CartId")
+                    b.Property<int>("CartId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Count")
-                        .HasColumnType("int");
+                    b.Property<byte>("Count")
+                        .HasColumnType("tinyint unsigned");
 
-                    b.Property<int?>("ProductId")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -122,20 +134,96 @@ namespace OnlineStore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int?>("CartId")
+                    b.Property<bool>("AddressesCompleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("BuildingNumber")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<int>("CartId")
                         .HasColumnType("int");
+
+                    b.Property<string>("City")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<bool>("Completed")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<string>("LocalNumber")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<bool>("Paid")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("PaymentOption")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("PostCode")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
                     b.Property<string>("Status")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
+                    b.Property<string>("Street")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("Surname")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("CartId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("OnlineStore.Data.OrderProduct", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("CloudStorageImageName")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("CloudStorageImageUrl")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<string>("Producer")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderProduct");
                 });
 
             modelBuilder.Entity("OnlineStore.Data.Product", b =>
@@ -201,10 +289,14 @@ namespace OnlineStore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<string>("AuthorName")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
                     b.Property<string>("Comment")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<DateTime>("Date")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)");
 
                     b.Property<int>("ProductId")
@@ -237,20 +329,11 @@ namespace OnlineStore.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
                     b.Property<string>("Password")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<string>("Phone")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<int>("Role")
                         .HasColumnType("int");
-
-                    b.Property<string>("Surname")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.HasKey("Id");
 
@@ -261,7 +344,9 @@ namespace OnlineStore.Migrations
                 {
                     b.HasOne("OnlineStore.Data.User", "User")
                         .WithMany("Addresses")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -279,11 +364,15 @@ namespace OnlineStore.Migrations
                 {
                     b.HasOne("OnlineStore.Data.Cart", "Cart")
                         .WithMany("CartItems")
-                        .HasForeignKey("CartId");
+                        .HasForeignKey("CartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("OnlineStore.Data.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Cart");
 
@@ -301,11 +390,20 @@ namespace OnlineStore.Migrations
 
             modelBuilder.Entity("OnlineStore.Data.Order", b =>
                 {
-                    b.HasOne("OnlineStore.Data.Cart", "Cart")
+                    b.HasOne("OnlineStore.Data.User", "User")
                         .WithMany()
-                        .HasForeignKey("CartId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Cart");
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("OnlineStore.Data.OrderProduct", b =>
+                {
+                    b.HasOne("OnlineStore.Data.Order", null)
+                        .WithMany("OrderProducts")
+                        .HasForeignKey("OrderId");
                 });
 
             modelBuilder.Entity("OnlineStore.Data.Product", b =>
@@ -341,6 +439,11 @@ namespace OnlineStore.Migrations
             modelBuilder.Entity("OnlineStore.Data.Cart", b =>
                 {
                     b.Navigation("CartItems");
+                });
+
+            modelBuilder.Entity("OnlineStore.Data.Order", b =>
+                {
+                    b.Navigation("OrderProducts");
                 });
 
             modelBuilder.Entity("OnlineStore.Data.Product", b =>

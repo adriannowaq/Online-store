@@ -1,0 +1,22 @@
+﻿.details {
+    padding: 0;
+    border: 1px solid #ebebeb;
+}
+.no-dots2 {
+    list-style-type: none;
+    padding-left: 0;
+    margin-bottom: 0px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.bgcolor {
+    background-color: #ebebeb;
+}
+.bgcolorlist {
+    background-color: #ebebeb;
+    border: none;
+    margin: 0;
+}
+.padding{
+    padding: 0;
+}

@@ -1,0 +1,10 @@
+﻿@model Cart
+
+<a route-active-controllers="Cart"
+   route-active-actions="Index"
+   asp-controller="Cart"
+   asp-action="Index"
+   class="nav-item nav-link">
+    <i class="fas fa-lg fa-shopping-cart"></i>
+    <span id="amount">@Model.SummaryCost.ToString("N2")</span><span> zł</span>
+</a>

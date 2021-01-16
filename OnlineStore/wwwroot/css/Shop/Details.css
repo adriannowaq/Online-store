@@ -48,3 +48,8 @@
 #review{
     resize:none;
 }
+
+.spinner-border {
+    width: 14px;
+    height: 14px;
+}

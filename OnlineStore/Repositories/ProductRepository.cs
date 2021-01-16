@@ -90,7 +90,7 @@ namespace OnlineStore.Repositories
         {
             return (await dbContext.Products
                 .Where(p => p.Name.Contains(letters, StringComparison.OrdinalIgnoreCase))
-                .OrderByDescending(p => p.Name)
+                .OrderBy(p => p.Name)
                 .Take(limit)
                 .Select(p => new SearchProductsModel
                 {

@@ -77,5 +77,12 @@ namespace OnlineStore.Repositories
             }
             return false;
         }
+
+        public Task<Address> FindDeliveryAddressAsync(int userId)
+        {
+            return dbContext.Addresses
+                .Where(a => a.UserId == userId && a.AddressType == AddressType.DeliveryAddress)
+                .FirstOrDefaultAsync();
+        }
     }
 }

@@ -21,8 +21,8 @@ namespace OnlineStore.Controllers
             this.reviewRepository = reviewRepository;
         }
 
-        [Route("[controller]/[action]/{id}")]
-        [Route("[controller]/[action]/{id}/reviews", Name = "ShopDetailsReviews")]
+        [Route("[controller]/[action]/{id}", Order = 0)]
+        [Route("[controller]/[action]/{id}/reviews", Name = "ShopDetailsReviews", Order = 1)]
         [HttpGet]
         public async Task<IActionResult> Details(int id, int pageNumber = 1, int pageSize = 10)
         {
@@ -34,7 +34,7 @@ namespace OnlineStore.Controllers
                     var reviews = await reviewRepository.GetByProductIdAsync(id, pageNumber, pageSize);
                     var viewModel = new ShopDetailsViewModel
                     {
-                        Product = product,
+                        Details = product,
                         Reviews = new StaticPagedList<Review>(reviews, pageNumber, pageSize, product.CountAll)
                     };
 

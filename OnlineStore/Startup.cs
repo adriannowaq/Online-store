@@ -50,10 +50,14 @@ namespace OnlineStore
             services.AddSingleton<ICloudStorageService, GoogleCloudStorageService>();
             services.AddSingleton<Sha256Helper>();
             services.AddSingleton<IHtmlSanitizationService, HtmlSanitizationService>();
+            services.AddSingleton<ITokenHelper, TokenHelper>();
+            services.AddScoped<ICartService, CartService>();
+            services.AddScoped<ICartRepository, CartRepository>();
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IReviewRepository, ReviewRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddHttpContextAccessor();
             services.AddRecaptcha(Configuration.GetSection("RecaptchaSettings"));
         }

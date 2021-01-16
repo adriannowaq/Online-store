@@ -6,7 +6,7 @@ namespace OnlineStore.Models.Shop
 {
     public class ShopDetailsViewModel
     {
-        public ProductModel Product { get; set; }
+        public ProductModel Details { get; set; }
         public StaticPagedList<Review> Reviews { get; set; }
     }
 }

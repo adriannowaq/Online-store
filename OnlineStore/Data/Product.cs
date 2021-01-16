@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace OnlineStore.Data
 {
@@ -14,7 +15,10 @@ namespace OnlineStore.Data
         public int Count { get; set; }
         public bool Available { get; set; }
 
+        [JsonIgnore]
         public int ProductCategoryId { get; set; }
+
+        [JsonIgnore]
         public ProductCategory ProductCategory { get; set; }
         public ICollection<Review> Reviews { get; set; }
     }
