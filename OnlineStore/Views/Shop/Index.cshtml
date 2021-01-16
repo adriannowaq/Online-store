@@ -17,6 +17,11 @@
     }
 }
 
+@section Styles {
+    <link href="~/css/Shop/Index.min.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist/css/toast.css" rel="stylesheet" />
+}
+
 <input type="hidden" id="RequestVerificationToken" name="RequestVerificationToken" value="@GetAntiXsrfRequestToken()">
 
 <div class="container">
@@ -104,14 +109,10 @@
             @Html.PagedListPager(Model, page => Url.Action("", new { category = Context.Request.Query["category"], order = Context.Request.Query["order"], page }), Bootstrap4PagedListRenderOptions.ClassicPlusFirstAndLast)
 
         </div>
-        
+
     </div>
 </div>
 
-@section Styles {
-    <link href="~/css/Shop/Index.min.css" rel="stylesheet" />
-    <link href="~/lib/bootstrap/dist/css/toast.css" rel="stylesheet" />
-}
 @section Scripts{
     <script src="~/js/Shop/index.js"></script>
     <script src="~/lib/bootstrap/dist/js/toast.js"></script>

@@ -53,3 +53,12 @@
     width: 14px;
     height: 14px;
 }
+
+.toast-header {
+    background: #808080;
+}
+
+.toast-container > .toast > .toast-header strong {
+    padding-right: 20px;
+    color: white;
+}

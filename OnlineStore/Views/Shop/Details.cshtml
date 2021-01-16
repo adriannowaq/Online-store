@@ -9,6 +9,7 @@
 
 @section Styles{
     <link href="~/lib/jquery-bar-rating/dist/themes/fontawesome-stars.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist/css/toast.css" rel="stylesheet" />
     <link href="~/css/Shop/Details.css" rel="stylesheet" />
 }
 @{
@@ -186,8 +187,8 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-<script src="~/js/Shop/details.js"></script>
-<script src="~/lib/bootstrap/dist/js/toast.js"></script>
+    <script src="~/js/Shop/details.js"></script>
+    <script src="~/lib/bootstrap/dist/js/toast.js"></script>
     <script src="~/lib/jquery-bar-rating/jquery.barrating.js"></script>
     <script type="text/javascript">
         addApiUrl("addProductToCart", "@Url.Action(nameof(CartController.AddItem), nameof(CartController).RemoveController())");
