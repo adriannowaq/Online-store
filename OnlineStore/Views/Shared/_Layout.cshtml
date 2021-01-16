@@ -13,6 +13,7 @@
     <link href="~/css/Cart/Finalization.min.css" rel="stylesheet" />
     <link href="~/lib/font-awesome/css/all.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+    <link href="~/lib/bootstrap/dist/css/toast.css" rel="stylesheet" />
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
@@ -89,7 +90,7 @@
                 </div>
 
             </div>
-</nav>
+        </nav>
 
         <nav id="menu" class="navbar navbar-expand-lg navbar-light pt-md-2 bg-light">
             <div class="container">
@@ -158,6 +159,9 @@
     <script src="~/lib/semantic-ui/components/search.min.js"></script>
     <script src="~/js/itemsearch.js"></script>
     <script src="~/js/apiUrls.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/toast.js"></script>
+    <script src="~/lib/jquery-bar-rating/jquery.barrating.js"></script>
+    <script src="~/js/Shop/helper.js"></script>
     <script type="text/javascript">
         addApiUrl("search", "@Url.Action(nameof(ShopController.SearchProducts), nameof(ShopController).RemoveController())");
     </script>

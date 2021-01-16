@@ -19,7 +19,7 @@
 
 @section Styles {
     <link href="~/css/Shop/Index.min.css" rel="stylesheet" />
-    <link href="~/lib/bootstrap/dist/css/toast.css" rel="stylesheet" />
+
 }
 
 <input type="hidden" id="RequestVerificationToken" name="RequestVerificationToken" value="@GetAntiXsrfRequestToken()">
@@ -115,7 +115,6 @@
 
 @section Scripts{
     <script src="~/js/Shop/index.js"></script>
-    <script src="~/lib/bootstrap/dist/js/toast.js"></script>
     <script type="text/javascript">
         addApiUrl("addProductToCart", "@Url.Action(nameof(CartController.AddItem), nameof(CartController).RemoveController())");
     </script>
