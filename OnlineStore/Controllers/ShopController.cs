@@ -7,6 +7,7 @@ using OnlineStore.Repositories;
 using System.Threading.Tasks;
 using X.PagedList;
 using System.Security.Claims;
+using System;
 
 namespace OnlineStore.Controllers
 {
@@ -75,7 +76,8 @@ namespace OnlineStore.Controllers
                         Comment = reviewDetails.Comment,
                         AuthorName = reviewDetails.AuthorName,
                         ProductId = reviewDetails.ProductId,
-                        UserId = int.Parse(User.FindFirst(ClaimTypes.Sid)?.Value)
+                        UserId = int.Parse(User.FindFirst(ClaimTypes.Sid)?.Value),
+                        Date = DateTime.UtcNow
                     });
                     return RedirectToRoute("ShopDetailsReviews", new { id = reviewDetails.ProductId });
                 }

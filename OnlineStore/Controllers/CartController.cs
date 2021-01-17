@@ -6,6 +6,7 @@ using OnlineStore.Infrastructure.Extensions;
 using OnlineStore.Infrastructure.Services;
 using OnlineStore.Models.Cart;
 using OnlineStore.Repositories;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
@@ -62,6 +63,7 @@ namespace OnlineStore.Controllers
 
                     order.OrderProducts = orderProducts;
                     order.Completed = true;
+                    order.Date = DateTime.UtcNow;
                     await orderRepository.UpdateAsync(order);
 
                     await cartService.DeleteCartAsync(cart);

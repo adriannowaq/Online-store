@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OnlineStore.Data
 {
@@ -8,8 +7,6 @@ namespace OnlineStore.Data
         public int Id { get; set; }
         public int Rate { get; set; }
         public string Comment { get; set; }
-
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime Date { get; set; }
         public string AuthorName { get; set; }
         public int UserId { get; set; }

@@ -154,8 +154,8 @@
                 <div class="text-body text-justify">
                     <h4 class="text-center">Opinie klientów</h4>
                     @{
-                                        if (Model.Reviews.Count == 0)
-                                        {
+                        if (Model.Reviews.Count == 0)
+                        {
                             <div class="my-2 border-bottom">
                                 <blockquote class="blockquote">
                                     <p class="mb-0">
@@ -165,11 +165,10 @@
                             </div>
                         }
                         else
-                                    {
-                                        foreach (var review in Model.Reviews)
-                                        {
-
-                                            @for (int j = 1; j <= review.Rate; j++)
+                        {
+                            foreach (var review in Model.Reviews)
+                            {
+                                @for (int j = 1; j <= review.Rate; j++)
                                 {
                                     <i class="fas fa-star"></i>
                                 }
@@ -182,7 +181,7 @@
                                         <p class="mb-0">
                                             @review.Comment
                                         </p>
-                                        <footer class="blockquote-footer">@*@review.User.Name*@</footer>
+                                        <footer class="blockquote-footer">@review.AuthorName</footer>
                                     </blockquote>
                                 </div>
                             }
