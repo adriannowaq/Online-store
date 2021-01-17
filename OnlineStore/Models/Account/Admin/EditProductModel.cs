@@ -1,11 +1,28 @@
 ﻿using Microsoft.AspNetCore.Http;
+using OnlineStore.Data;
 using OnlineStore.Infrastructure.Attributes;
 using System.ComponentModel.DataAnnotations;
 
 namespace OnlineStore.Models.Account.Admin
 {
-    public class AddProductModel
+    public class EditProductModel
     {
+        public EditProductModel() {}
+
+        public EditProductModel(Product details)
+        {
+            this.Id = details.Id;
+            this.Name = details.Name;
+            this.Producer = details.Producer;
+            this.Price = details.Price;
+            this.Description = details.Description;
+            this.Count = details.Count;
+            this.ProductCategory = details.ProductCategoryId;
+        }
+
+        [Required(AllowEmptyStrings = false)]
+        public int Id { get; set; }
+
         [Display(Name = "Nazwa")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Pole wymagane.")]
         public string Name { get; set; }
@@ -32,10 +49,9 @@ namespace OnlineStore.Models.Account.Admin
         [Range(1, int.MaxValue, ErrorMessage = "Pole wymagane.")]
         public int ProductCategory { get; set; }
 
-        [Display(Name = "Zdjęcie")]
-        [Required(ErrorMessage = "Pole wymagane.")]
+        [Display(Name = "Zdjęcie")]       
         [MaxFileSize(3 * 1024 * 1024, ErrorMessage = "Maksymalny rozmiar zdjęcia to 3 mb.")]
-        [AllowedContentTypes(new string[] { "image/gif", "image/jpg", "image/jpeg", "image/png" }, 
+        [AllowedContentTypes(new string[] { "image/gif", "image/jpg", "image/jpeg", "image/png" },
             ErrorMessage = "Dozwolone pliki .gif, .jpg, .png, .jpeg")]
         public IFormFile ImageFile { get; set; }
     }

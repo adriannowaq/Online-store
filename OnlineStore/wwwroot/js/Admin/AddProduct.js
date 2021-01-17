@@ -19,6 +19,7 @@ function submit(event) {
             .then(data => {
                 loadingSpinner.addClass("d-none");
                 $("#ProductAdded").removeClass("d-none");
+                $("html, body").animate({ scrollTop: 0 }, "fast");
 
                 window.setTimeout(() => {
                     window.location.href = data.redirectUrl;

@@ -146,3 +146,11 @@ header {
 }
 
 
+.breadcrumb {
+    background: none;
+    border-bottom: 1px solid #ebebeb;
+    -moz-border-radius: 0;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+    margin-bottom: 0;
+}

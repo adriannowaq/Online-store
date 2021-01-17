@@ -66,5 +66,11 @@
     "inputFiles": [
       "wwwroot/css/Cart/Index.css"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/js/Admin/EditProduct.min.js",
+    "inputFiles": [
+      "wwwroot/js/Admin/EditProduct.js"
+    ]
   }
 ]

@@ -89,17 +89,28 @@
                                 </div>
                             </a>
 
-                            <div class="addtocart-in-zoom">
+                            <div class="button-stick-bottom">
                                 <h5 class="font-weight-bold">@Math.Round(product.Price, 2) zł</h5>
-                                <button data-product-id="@product.Id" data-price="@product.Price" data-product-name="@product.Name" class="mx-auto btn btn-secondary one-width btn-addtocart">
-                                    <span>
-                                        <i class="fas fa-lg fa-shopping-cart mr-2"></i>
-                                        Dodaj do koszyka
-                                    </span>
-                                    <div class="spinner-border d-none" role="status">
-                                        <span class="sr-only">Loading...</span>
-                                    </div>
-                                </button>
+                                @if (product.Count == 0)
+                                {
+                                    <button class="mx-auto btn btn-secondary one-width btn-addtocart" disabled>
+                                        <span>
+                                            Produkt niedostępny
+                                        </span>
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button data-product-id="@product.Id" data-price="@product.Price" data-product-name="@product.Name" class="mx-auto btn btn-secondary one-width btn-addtocart">
+                                        <span>
+                                            <i class="fas fa-lg fa-shopping-cart mr-2"></i>
+                                            Dodaj do koszyka
+                                        </span>
+                                        <div class="spinner-border d-none" role="status">
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+                                    </button>
+                                }
                             </div>
 
                         </div>

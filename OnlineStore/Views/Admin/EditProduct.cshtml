@@ -1,0 +1,104 @@
+﻿@using OnlineStore.Repositories
+@inject IProductCategoryRepository productCategoryRepository
+
+@model EditProductModel
+@{
+    ViewData["Title"] = "Edytuj";
+}
+<div class="row">
+    <div class="col text-center">
+        <h1>Edytuj produkt</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <form id="EditProduct" asp-action="EditProduct" method="post">
+            <input name="id" class="form-control" value="@Model.Id" type="hidden" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" value="@Model.Name" />
+                <div class="text-center"><span class="text-danger w-100" asp-validation-for="Name"></span></div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Producer" class="control-label"></label>
+                <input asp-for="Producer" class="form-control" />
+                <div class="text-center"><span class="text-danger w-100" asp-validation-for="Producer"></span></div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Count" class="control-label"></label>
+                <input asp-for="Count" class="form-control" />
+                <div class="text-center"><span class="text-danger w-100" asp-validation-for="Count"></span></div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <div class="text-center"><span class="text-danger w-100" asp-validation-for="Price"></span></div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <div class="text-center"><span class="text-danger w-100" asp-validation-for="Description"></span></div>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProductCategory" class="control-label"></label>
+                <select asp-for="ProductCategory"
+                        asp-items="@(new SelectList(await productCategoryRepository.GetProductCategoriesAsync(), "Id", "Name"))"
+                        class="form-control">
+                    <option selected>Wybierz kategorię</option>
+                </select>
+                <div class="text-center"><span class="text-danger w-100" asp-validation-for="ProductCategory"></span></div>
+            </div>
+            <div class="form-check form-check-inline">
+                <input type="radio" class="form-check-input" value="0" id="currentPhoto" name="Photo" checked />
+                <label class="form-check-label" for="currentPhoto">Zostaw aktualne zdjecie</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input type="radio" class="form-check-input" value="1" name="Photo" id="newPhoto" />
+                <label class="form-check-label" for="newPhoto">Zmień zdjęcie</label>
+            </div>
+            <div class="form-group d-none" id="changePhoto">
+                <label asp-for="ImageFile" class="control-label"></label>
+                <input asp-for="ImageFile" class="form-control-file" />
+                <div class="text-center"><span class="text-danger w-100" asp-validation-for="ImageFile"></span></div>
+            </div>
+            <div id="LoadingSpinner" class="form-group d-none">
+                <div class="d-flex flex-column align-items-center justify-content-center">
+                    <div class="row">
+                        <div class="spinner-border text-secondary" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <span>Zapisywanie...</span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group text-center">
+                <input class="btn btn-dark" type="submit" value="Zapisz" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .nav-link {
+        margin-left: 4px;
+        margin-right: 4px;
+    }
+</style>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/lib/tinymce/tinymce.min.js" asp-append-version="true"></script>
+    <script src="~/lib/tinymce/langs/pl.min.js" asp-append-version="true"></script>
+    <script src="~/js/Admin/EditProduct.min.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        addApiUrl("adminEditProduct", "@Url.Action(nameof(AdminController.EditProduct))");
+        tinymce.init({
+            selector: "#Description",
+            language: 'pl',
+            language_url: '/js/lib/tinymce/langs/pl.min.js',
+            height: "400"
+        });
+    </script>
+}

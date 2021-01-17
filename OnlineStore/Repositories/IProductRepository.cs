@@ -9,7 +9,9 @@ namespace OnlineStore.Repositories
 {
     public interface IProductRepository
     {
-        Task AddAsync(AddProductModel productDetails);
+        Task<int> AddAsync(AddProductModel productDetails);
+        Task EditAsync(EditProductModel productDetails);
+        Task<Product> FindByIdForAdminAsync(int id);
         Task<ProductModel> FindByIdAsync(int id);
         Task<List<SearchProductsModel>> SearchProductsByLettersAsync(string letters, int limit = 10);
         Task<List<Product>> GetProductsPerPageAsync(int? category, int page, int itemsCount, int order);

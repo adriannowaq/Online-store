@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
+﻿using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using OnlineStore.Controllers;
 using OnlineStore.Data;
@@ -36,7 +35,7 @@ namespace OnlineStore.Repositories
             this.linkGenerator = linkGenerator;
         }
 
-        public async Task AddAsync(AddProductModel productDetails)
+        public async Task<int> AddAsync(AddProductModel productDetails)
         {
             var sanitizeHtml = htmlSanitizationService.SanitizeData(productDetails.Description);
             var cloudResult = await cloudStorageService.UploadFileAsync(productDetails.ImageFile);
@@ -52,8 +51,40 @@ namespace OnlineStore.Repositories
                 ProductCategoryId = productDetails.ProductCategory
             };
 
-            await dbContext.AddAsync(product);
+            dbContext.Add(product);
             await dbContext.SaveChangesAsync();
+
+            return product.Id;
+        }
+
+        public async Task EditAsync(EditProductModel productDetails)
+        {
+            var sanitizeHtml = htmlSanitizationService.SanitizeData(productDetails.Description);
+            
+            var productToUpdate = await dbContext.Products
+                .Where(p => p.Id == productDetails.Id)
+                .FirstOrDefaultAsync();
+
+            if (productToUpdate != null)
+            {
+                productToUpdate.Name = productDetails.Name;
+                productToUpdate.Producer = productDetails.Producer;
+                productToUpdate.Price = productDetails.Price;
+                productToUpdate.Description = sanitizeHtml;
+                productToUpdate.Count = productDetails.Count;
+                productToUpdate.ProductCategoryId = productDetails.ProductCategory;
+                if (productDetails.ImageFile != null)
+                {
+                    if (productToUpdate.CloudStorageImageName != null)
+                        await cloudStorageService.DeleteFileAsync(productToUpdate.CloudStorageImageName);
+
+                    var cloudResult = await cloudStorageService.UploadFileAsync(productDetails.ImageFile);
+                    productToUpdate.CloudStorageImageName = cloudResult.FileName;
+                    productToUpdate.CloudStorageImageUrl = cloudResult.FileUrl;
+                }
+                dbContext.Products.Update(productToUpdate);
+                await dbContext.SaveChangesAsync();
+            }
         }
 
         public Task<int> CountProductsAsync(int? category)
@@ -111,6 +142,7 @@ namespace OnlineStore.Repositories
         public Task<ProductModel> FindByIdAsync(int id)
         {
             return (from p in dbContext.Products
+                    join p1 in dbContext.ProductsCategories on p.ProductCategoryId equals p1.Id
                     where p.Id == id
                     let count = dbContext.Reviews.Where(r => r.ProductId == id).Count()
                     let average = dbContext.Reviews.Where(r => r.ProductId == id).Select(r => r.Rate).Average()
@@ -118,8 +150,14 @@ namespace OnlineStore.Repositories
                     {
                         Product = p,
                         CountAll = count,
-                        AverageRate = average
+                        AverageRate = average,
+                        CategoryName = p1.Name
                     }).FirstOrDefaultAsync();
+        }
+
+        public Task<Product> FindByIdForAdminAsync(int id)
+        {
+            return dbContext.Products.Where(p => p.Id == id).FirstOrDefaultAsync();
         }
 
         public Task<List<Product>> GetMostPopularProductsAsync()

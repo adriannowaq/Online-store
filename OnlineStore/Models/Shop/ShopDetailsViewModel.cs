@@ -8,5 +8,6 @@ namespace OnlineStore.Models.Shop
     {
         public ProductModel Details { get; set; }
         public StaticPagedList<Review> Reviews { get; set; }
+        
     }
 }

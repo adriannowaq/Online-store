@@ -26,12 +26,20 @@
 <input type="hidden" id="RequestVerificationToken" name="RequestVerificationToken" value="@GetAntiXsrfRequestToken()">
 
 <div class="container">
+   
     <div class="borderbox">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="@Url.ActionLink("Index","Shop")">Sklep</a></li>
+                <li class="breadcrumb-item"><a href="@Url.ActionLink("Index","Shop", new { category=Model.Details.Product.ProductCategoryId })">@Model.Details.CategoryName</a></li>
+                <li class="breadcrumb-item active" aria-current="page">@Model.Details.Product.Name</li>
+            </ol>
+        </nav>
         <div class="row m-0 p-0">
             <div class="col-md-6 col-sm-12">
                 <div class="card">
-                    <div class="card-body">
-                        <img src="@Model.Details.Product.CloudStorageImageUrl" class="img-fluid" alt="@Model.Details.Product.CloudStorageImageName" />
+                    <div class="card-body text-center details-card-img">
+                        <img src="@Model.Details.Product.CloudStorageImageUrl" class="img-fluid details-img" alt="@Model.Details.Product.CloudStorageImageName" />
                     </div>
                 </div>
             </div>
@@ -62,7 +70,7 @@
                         <p>Ilość w magazynie: @Model.Details.Product.Count</p>
                         <h3 class="mt-4">@Math.Round(Model.Details.Product.Price, 2) zł</h3>
                         @{
-                            if (Model.Details.Product.Available)
+                            if (Model.Details.Product.Count > 0)
                             {
                                 <input type="number" name="num" value="1" min="1" max="@Model.Details.Product.Count" class="form-control one-width" />
                                 <button data-product-id="@Model.Details.Product.Id" data-price="@Model.Details.Product.Price" data-product-name="@Model.Details.Product.Name" class="mt-2 btn btn-secondary one-width" id="btn-addtocart">
@@ -87,6 +95,17 @@
                             }
                         }
                     </div>
+                    @if (Context.User.IsInRole(nameof(UserRole.Admin)))
+                    {
+                        <div class="m-1 text-right">
+                            <button class="mt-2 btn btn-secondary" 
+                                    onclick="location.href = '@Url.Action(nameof(AdminController.EditProduct),
+                                                                nameof(AdminController).RemoveController(),
+                                                                new { id = Model.Details.Product.Id })'">
+                                Edytuj
+                            </button>
+                        </div>
+                    }
                 </div>
             </div>
 
@@ -135,8 +154,8 @@
                 <div class="text-body text-justify">
                     <h4 class="text-center">Opinie klientów</h4>
                     @{
-                        if (Model.Reviews.Count == 0)
-                        {
+                                        if (Model.Reviews.Count == 0)
+                                        {
                             <div class="my-2 border-bottom">
                                 <blockquote class="blockquote">
                                     <p class="mb-0">
@@ -146,11 +165,11 @@
                             </div>
                         }
                         else
-                        {
-                            foreach (var review in Model.Reviews)
-                            {
+                                    {
+                                        foreach (var review in Model.Reviews)
+                                        {
 
-                                @for (int j = 1; j <= review.Rate; j++)
+                                            @for (int j = 1; j <= review.Rate; j++)
                                 {
                                     <i class="fas fa-star"></i>
                                 }
