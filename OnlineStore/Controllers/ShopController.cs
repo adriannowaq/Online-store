@@ -92,18 +92,6 @@ namespace OnlineStore.Controllers
             return Ok(new { products });
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-
-        public async Task<IActionResult> AddItemToCart([FromBody] int productId)
-        {
-            if (ModelState.IsValid)
-            {
-                return Ok();
-            }
-            return BadRequest();
-        }
-
         #endregion
     }
 }
