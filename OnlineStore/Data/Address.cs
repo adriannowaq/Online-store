@@ -1,4 +1,6 @@
-﻿namespace OnlineStore.Data
+﻿using OnlineStore.Models.Account;
+
+namespace OnlineStore.Data
 {
     public enum AddressType
     {
@@ -7,6 +9,20 @@
     }
     public class Address
     {
+        public Address() {}
+
+        public Address(SettingsModel details)
+        {
+            this.Name = details.Name;
+            this.Surname = details.Surname;
+            this.Phone = details.Phone;
+            this.Street = details.Street;
+            this.BuildingNumber = details.BuildingNumber;
+            this.LocalNumber = details.LocalNumber;
+            this.City = details.City;
+            this.PostCode = details.PostCode;
+        }
+
         public int Id { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }

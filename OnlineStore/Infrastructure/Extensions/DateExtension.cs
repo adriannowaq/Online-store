@@ -9,9 +9,9 @@ namespace OnlineStore.Infrastructure.Extensions
         /// <exception cref="OSPlatformException">
         /// Thrown when runtime system isn't Windows or Linux.
         /// </exception>
-        public static DateTime ConvertUtcToPolishTime(this DateTime date)
+        public static DateTimeOffset ConvertUtcToPolishTime(this DateTimeOffset date)
         {
-            DateTime? convertedDate = null;
+            DateTimeOffset? convertedDate = null;
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 convertedDate = TimeZoneInfo
                     .ConvertTimeBySystemTimeZoneId(date, "Central European Standard Time");
@@ -21,7 +21,7 @@ namespace OnlineStore.Infrastructure.Extensions
             if (convertedDate == null)
                 throw new OSPlatformException();
 
-            return (DateTime) convertedDate;
+            return (DateTimeOffset) convertedDate;
         }
     }
 }

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using OnlineStore.Models.Account;
 
 namespace OnlineStore.Repositories
 {
@@ -30,7 +31,8 @@ namespace OnlineStore.Repositories
         {
             var hashedPassword = sha256Helper.Hash(password);
             var account = await dbContext.Users
-                .Where(u => u.Email.Equals(email) && u.Password.Equals(hashedPassword)).FirstOrDefaultAsync();
+                .Where(u => u.Email.Equals(email) && u.Password.Equals(hashedPassword))
+                .FirstOrDefaultAsync();
 
             if (account == null)
                 return false;
@@ -52,14 +54,16 @@ namespace OnlineStore.Repositories
         }
 
         public Task SignOutAsync() =>
-            httpContextAccessor.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            httpContextAccessor.HttpContext
+            .SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
         public Task<bool> CheckEmailExistsAsync(string email)
         {
             return dbContext.Users.Where(u => u.Email.Equals(email)).AnyAsync();
         }
 
-        public async Task<bool> CreateAccountAsync(string email, string password, UserRole role = UserRole.None)
+        public async Task<bool> CreateAccountAsync(string email, string password,
+            UserRole role = UserRole.None)
         {
             password = sha256Helper.Hash(password);
 
@@ -83,6 +87,43 @@ namespace OnlineStore.Repositories
             return dbContext.Addresses
                 .Where(a => a.UserId == userId && a.AddressType == AddressType.DeliveryAddress)
                 .FirstOrDefaultAsync();
+        }
+
+        public Task<List<Address>> FindUserAddressesAsync(int userId)
+        {
+            return dbContext.Addresses
+                   .Where(a => a.UserId == userId)
+                   .Include(a => a.User)
+                   .ToListAsync();
+        }
+
+        public async Task AddOrUpdateAddressAsync(int userId, 
+            Address address, AddressType addressType)
+        {
+            var addressInDb = dbContext.Addresses
+                .Where(a => a.UserId == userId && a.AddressType == addressType).FirstOrDefault();
+
+            if (addressInDb != null)
+            {
+                addressInDb.Name = address.Name;
+                addressInDb.Surname = address.Surname;
+                addressInDb.Phone = address.Phone;
+                addressInDb.Street = address.Street;
+                addressInDb.BuildingNumber = address.BuildingNumber;
+                addressInDb.LocalNumber = address.LocalNumber;
+                addressInDb.City = address.City;
+                addressInDb.PostCode = address.PostCode;
+
+                dbContext.Addresses.Update(addressInDb);
+            }
+            else
+            {
+                address.AddressType = addressType;
+                address.UserId = userId;
+
+                dbContext.Addresses.Add(address);
+            }
+            await dbContext.SaveChangesAsync();
         }
     }
 }

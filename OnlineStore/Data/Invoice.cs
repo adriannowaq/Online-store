@@ -6,7 +6,7 @@ namespace OnlineStore.Data
     {
         public int Id { get; set; }
         public string InvoiceNumber { get; set; }
-        public DateTime Date { get; set; }
+        public DateTimeOffset Date { get; set; }
         public Order Order { get; set; }
     }
 }

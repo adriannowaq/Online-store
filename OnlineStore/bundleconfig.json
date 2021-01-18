@@ -68,6 +68,12 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/css/Details/Details.min.css",
+    "inputFiles": [
+      "wwwroot/css/Details/Details.css"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/js/Admin/EditProduct.min.js",
     "inputFiles": [
       "wwwroot/js/Admin/EditProduct.js"

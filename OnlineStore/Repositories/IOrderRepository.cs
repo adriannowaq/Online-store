@@ -1,4 +1,5 @@
 ﻿using OnlineStore.Data;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace OnlineStore.Repositories
@@ -10,5 +11,7 @@ namespace OnlineStore.Repositories
         Task UpdateAsync(Order order);
         Task DeleteAsync(Order order);
         Task<bool> CartIdExistsInOrdersAsync(int cartId);
+        Task<List<Order>> GetOrderListWithProductsAsync(int userId, int page, int pageSize);
+        Task<int> CountOrdersAsync(int userId);
     }
 }

@@ -1,10 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineStore.Data;
+using OnlineStore.Infrastructure.Extensions;
 using OnlineStore.Models.Account;
 using OnlineStore.Repositories;
 using reCAPTCHA.AspNetCore;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using X.PagedList;
 
 namespace OnlineStore.Controllers
 {
@@ -12,11 +16,15 @@ namespace OnlineStore.Controllers
     {
         private readonly IAccountRepository accountRepository;
         private readonly IRecaptchaService recaptchaService;
+        private readonly IOrderRepository orderRepository;
 
-        public AccountController(IAccountRepository accountRepository, IRecaptchaService recaptchaService)
+        public AccountController(IAccountRepository accountRepository, 
+                                 IRecaptchaService recaptchaService, 
+                                 IOrderRepository orderRepository)
         {
             this.accountRepository = accountRepository;
             this.recaptchaService = recaptchaService;
+            this.orderRepository = orderRepository;
         }
 
         [HttpGet]
@@ -25,9 +33,54 @@ namespace OnlineStore.Controllers
         [HttpGet]
         public IActionResult Register() => View();
 
-        [HttpGet]
         [Authorize]
-        public IActionResult Details() => View();
+        [HttpGet]
+        public async Task<IActionResult> Details()
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.Sid).Value);
+            var userAddresses = await accountRepository.FindUserAddressesAsync(userId);
+            var latestOrder = await orderRepository.GetOrderListWithProductsAsync(userId, 1, 1);
+
+            var viewModel = new AccountViewModel
+            {
+                ShippingDetails = userAddresses?
+                    .FirstOrDefault(ua => ua.AddressType == AddressType.DeliveryAddress),
+                UserDetails = userAddresses?
+                    .FirstOrDefault(ua => ua.AddressType == AddressType.Address),
+                OrderDetails = latestOrder?.FirstOrDefault()
+            };
+            return View(viewModel);
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> Orders(int page = 1, int pageSize = 5)
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.Sid).Value);
+            var ordersList = await orderRepository.GetOrderListWithProductsAsync(userId, page, pageSize);
+            var ordersCount = await orderRepository.CountOrdersAsync(userId);
+
+            return View(new StaticPagedList<Order>(ordersList, page, pageSize, ordersCount));
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> Settings(AddressType addressType = AddressType.Address)
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.Sid).Value);
+            var userAddresses = await accountRepository.FindUserAddressesAsync(userId);
+
+
+            ViewData["AddressType"] = addressType;
+            var viewModel = new AddressViewModel
+            {
+                ShippingDetails = userAddresses?
+                    .FirstOrDefault(ua => ua.AddressType == AddressType.DeliveryAddress),
+                UserDetails = userAddresses?
+                    .FirstOrDefault(ua => ua.AddressType == AddressType.Address)
+            };
+            return View(viewModel);
+        }
 
         [HttpGet]
         public async Task<IActionResult> CheckEmailExists([FromQuery] string email)
@@ -40,12 +93,29 @@ namespace OnlineStore.Controllers
         {
             if (ModelState.IsValid)
             {
-                var logged = await accountRepository.SignInAsync(loginDetails.Email, loginDetails.Password);
+                var logged = await accountRepository
+                    .SignInAsync(loginDetails.Email, loginDetails.Password);
                 if (logged)
-                    return RedirectToAction(nameof(HomeController.Index), "Home");
+                    return RedirectToAction(nameof(HomeController.Index), 
+                        nameof(HomeController).RemoveController());
             }
             ModelState.AddModelError("", "Nieprawidłowy email lub hasło.");
             return View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Settings([FromForm] SettingsModel details,
+                                                  [FromQuery] AddressType addressType)
+        {
+            if (ModelState.IsValid)
+            {
+                var userId = int.Parse(User.FindFirst(ClaimTypes.Sid).Value);
+                await accountRepository.AddOrUpdateAddressAsync(userId, 
+                    new Address(details), addressType);
+            }
+            return RedirectToAction(nameof(Settings), new { addressType });
         }
 
         [HttpPost]

@@ -1,0 +1,83 @@
+﻿@model AccountViewModel
+@{
+    ViewData["Title"] = "Profil";
+}
+<div class="container">
+    <div class="row w-100">
+        @*Menu*@
+        <div class="col-lg-2 padding">
+            <div class="col-lg-12 mt-2 padding">
+                <ul class="no-dots no-style">
+                    <li><a href="Details"><i class="fas fa-info-circle"></i>&nbsp;&nbsp;Szczegóły</a></li>
+                    <li><a href="Orders"><i class="fas fa-clipboard-list"></i>&nbsp;&nbsp;Zamówienia</a></li>
+                    <li><a href="Settings"><i class="fas fa-cog"></i>&nbsp;Dane konta</a></li>
+                </ul>
+            </div>
+        </div>
+        @*Prawa część*@
+        <div class="col-lg-10 onlyborderleft">
+            <div class="col-lg-12 padding">
+                <div class="row margin-0 mb-3">
+                    <div class="col-lg-6 order padding">
+                        <div class="col-lg-12 text-center padding bg-colo-gray">
+                            <h4>Dane kontaktowe</h4>
+                        </div>
+                        <ul class="list mb-1">
+                            @if (Model.UserDetails != null)
+                            {
+                                <li>Imię: @Model.UserDetails.Name</li>
+                                <li>Nazwisko: @Model.UserDetails.Surname</li>
+                                <li>E-mail: @Model.UserDetails.User.Email</li>
+                                <li>Nr. telefonu: @Model.UserDetails.Phone</li>
+                                <li>Miasto: @Model.UserDetails.City</li>
+                                <li>Ulica: @Model.UserDetails.Street</li>
+                                <li>Kod pocztowy: @Model.UserDetails.PostCode</li>
+                                <li>Nr. budynku: @Model.UserDetails.BuildingNumber</li>
+                                <li>Nr. lokalu: @Model.UserDetails.LocalNumber</li>
+                            }
+                            else
+                            {
+                                <li>Brak danych.</li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="col-lg-6 padding order">
+                        <div class="col-lg-12 text-center padding bg-colo-gray">
+                            <h4>Dane wysyłkowe</h4>
+                        </div>
+                        <ul class="list mb-1">
+                            @if (Model.ShippingDetails != null)
+                            {
+                                <li>Imię: @Model.ShippingDetails.Name</li>
+                                <li>Nazwisko: @Model.ShippingDetails.Surname</li>
+                                <li>E-mail: @Model.ShippingDetails.User.Email</li>
+                                <li>Nr. telefonu: @Model.ShippingDetails.Phone</li>
+                                <li>Miasto: @Model.ShippingDetails.City</li>
+                                <li>Ulica: @Model.ShippingDetails.Street</li>
+                                <li>Kod pocztowy: @Model.ShippingDetails.PostCode</li>
+                                <li>Nr. budynku: @Model.ShippingDetails.BuildingNumber</li>
+                                <li>Nr. lokalu: @Model.ShippingDetails.LocalNumber</li>
+                            }
+                            else
+                            {
+                                <li>Brak danych.</li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            @if (Model.OrderDetails == null)
+	        {
+                <h4>Brak ostatnich zamówień</h4>            
+	        }
+            else
+            {
+                <h4>Ostatnie zamówienie</h4>
+                @await Html.PartialAsync("Account/OrderedItems", Model.OrderDetails)
+            }
+        </div>
+    </div>
+</div>
+@section Styles {
+    <link href="~/css/Details/Details.min.css" rel="stylesheet" />
+}

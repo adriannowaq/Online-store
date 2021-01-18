@@ -154,3 +154,28 @@ header {
     border-radius: 0;
     margin-bottom: 0;
 }
+
+
+.pagination {
+    margin-top: 20px;
+    margin-left: -15px;
+    padding: 0;
+    border-radius: 0;
+}
+
+.page-item:first-child .page-link, .page-item:last-child .page-link {
+    border-radius: 0;
+}
+
+.page-link {
+    color: #000;
+}
+
+.page-item.active .page-link {
+    background: #808080;
+    border-color: #808080;
+}
+
+.page-link:hover {
+    color: #000;
+}

@@ -126,26 +126,6 @@
         }
      });
 
-    //$("#payment button").on("click", function (event) {
-    //    event.preventDefault();
-
-    //    let anyErrorCalculate = false;
-    //    $(".cart-count input").each(function () {
-    //        if ($(this).attr("data-item-cost-calculated") === "false") {
-    //            anyErrorCalculate = true;
-    //            return false;
-    //        }
-    //    });
-    //    if (anyErrorCalculate === true) {
-    //        $("#payment button").addClass("d-none");
-    //        $("#payment div").removeClass("d-none");
-    //        console.log("test")
-    //    } else {
-    //        console.log("test2")
-    //        $("#payment").submit();
-    //    }
-    //});
-
     function checkObjNumberIsSafe(obj) {
         if (!Number.isSafeInteger(Number(obj.val())) ||
             obj.val() < parseInt(obj.attr("min")) ||

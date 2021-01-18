@@ -1,0 +1,65 @@
+﻿@model AddressViewModel
+@{
+    ViewData["Title"] = "Ustawienia";
+
+    var isDeliveryAddress = 
+        (AddressType) ViewData["AddressType"] == AddressType.DeliveryAddress ? true : false;
+
+    var options = new List<SelectListItem>() {
+        new SelectListItem()
+        {
+            Value = AddressType.Address.ToString(),
+            Text = "Adres kontaktowy",
+            Selected = isDeliveryAddress
+        },
+        new SelectListItem()
+        {
+            Value = AddressType.DeliveryAddress.ToString(),
+            Text = "Adres dostawy",
+            Selected = isDeliveryAddress
+        },
+    };
+}
+
+<div class="container">
+    <div class="row w-100">
+        @*Menu*@
+        <div class="col-lg-2 padding">
+            <div class="col-lg-12 mt-2 padding">
+                <ul class="no-dots no-style">
+                    <li><a href="Details"><i class="fas fa-info-circle"></i>&nbsp;&nbsp;Szczegóły</a></li>
+                    <li><a href="Orders"><i class="fas fa-clipboard-list"></i>&nbsp;&nbsp;Zamówienia</a></li>
+                    <li><a href="Settings"><i class="fas fa-cog"></i>&nbsp;Dane konta</a></li>
+                </ul>
+            </div>
+        </div>
+        @*Prawa część*@
+        <div class="col-lg-10 onlyborderleft">
+            <h4>Ustawienia</h4>
+            <div class="jumbotron text-center">
+                <form id="addressType" asp-action="@nameof(AccountController.Settings)" method="get">
+                    <select asp-items="@options" name="addressType" class="form-control mb-2">
+                    </select>
+                </form>
+                <div class="form-row">
+                    <div class="col">
+                        @await Html.PartialAsync("Account/SettingsForm",
+                            new SettingsModel
+                            (
+                                isDeliveryAddress == false ? 
+                                    Model.UserDetails : Model.ShippingDetails
+                            ))
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <link href="~/css/Details/Details.min.css" rel="stylesheet" />
+}
+
+@section Scripts {
+    <script src="~/js/Account/settings.js"></script>
+}

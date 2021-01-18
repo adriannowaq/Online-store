@@ -22,7 +22,7 @@ namespace OnlineStore.Data
         public string LocalNumber { get; set; }
         public string City { get; set; }
         public string PostCode { get; set; }
-        public DateTime Date { get; set; }
+        public DateTimeOffset Date { get; set; }
         public ICollection<OrderProduct> OrderProducts { get; set; }
         public bool Completed { get; set; }
         public bool AddressesCompleted { get; set; }

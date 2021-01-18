@@ -72,7 +72,7 @@
                         @{
                             if (Model.Details.Product.Count > 0)
                             {
-                                <input type="number" name="num" value="1" min="1" max="@Model.Details.Product.Count" class="form-control one-width" />
+                                <input id="itemsCount" type="number" name="num" value="1" min="1" max="@Model.Details.Product.Count" class="form-control one-width" />
                                 <button data-product-id="@Model.Details.Product.Id" data-price="@Model.Details.Product.Price" data-product-name="@Model.Details.Product.Name" class="mt-2 btn btn-secondary one-width" id="btn-addtocart">
                                     <span id="btn-cart">
                                         <i class="fas fa-lg fa-shopping-cart mr-2"></i>

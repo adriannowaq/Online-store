@@ -1,0 +1,51 @@
+﻿@model SettingsModel
+
+<form asp-action="@nameof(AccountController.Settings)" method="post" 
+      asp-route-addressType="@ViewData["AddressType"]">
+    <div class="col-lg-12">
+        <h4>Dane kontaktowe</h4>
+        <div class="col-md-12 mb-2">
+            <label asp-for="Name"><b>Imię</b></label>
+            <input asp-for="Name" id="name" class="form-control" />
+            <div class="text-center"><span class="text-danger w-100" asp-validation-for="Name"></span></div>
+        </div>
+        <div class="col-md-12 mb-2">
+            <label asp-for="Surname"><b>Nazwisko</b></label>
+            <input asp-for="Surname" id="surname" class="form-control" />
+            <div class="text-center"><span class="text-danger w-100" asp-validation-for="Surname"></span></div>
+        </div>
+        <div class="col-md-12 mb-2">
+            <label asp-for="Phone"><b>Numer telefonu</b></label>
+            <input asp-for="Phone" id="phone" class="form-control" />
+            <div class="text-center"><span class="text-danger w-100" asp-validation-for="Phone"></span></div>
+        </div>
+        <div class="col-md-12 mb-2">
+            <label asp-for="City"><b>Miasto</b></label>
+            <input asp-for="City" id="city" class="form-control" />
+            <div class="text-center"><span class="text-danger w-100" asp-validation-for="City"></span></div>
+        </div>
+        <div class="col-md-12 mb-2">
+            <label asp-for="Street"><b>Ulica</b></label>
+            <input asp-for="Street" id="street" class="form-control" />
+            <div class="text-center"><span class="text-danger w-100" asp-validation-for="Street"></span></div>
+        </div>
+        <div class="col-md-12 mb-2">
+            <label asp-for="PostCode"><b>Kod pocztowy</b></label>
+            <input asp-for="PostCode" id="postcode" class="form-control" />
+            <div class="text-center"><span class="text-danger w-100" asp-validation-for="PostCode"></span></div>
+        </div>
+        <div class="col-md-12 mb-2">
+            <label asp-for="BuildingNumber"><b>Nr. budynku</b></label>
+            <input asp-for="BuildingNumber" id="buildingnumber" class="form-control" />
+            <div class="text-center"><span class="text-danger w-100" asp-validation-for="BuildingNumber"></span></div>
+        </div>
+        <div class="col-md-12 mb-2">
+            <label asp-for="LocalNumber"><b>Nr. lokalu</b></label>
+            <input asp-for="LocalNumber" id="localnumber" class="form-control" />
+            <div class="text-center"><span class="text-danger w-100" asp-validation-for="LocalNumber"></span></div>
+        </div>
+        <div class="col-lg-12 mt-4">
+            <button type="submit" class="btn btn-dark">Zatwierdź</button>
+        </div>
+    </div>
+</form>

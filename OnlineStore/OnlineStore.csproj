@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <UserSecretsId>dcbda843-5c39-4d65-9adc-f1fdce5336f7</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -9,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\css\Details\Details.min.css" />
     <_ContentIncludedByDefault Remove="wwwroot\js\apiUrls.min.js" />
   </ItemGroup>
 
@@ -31,10 +33,6 @@
     <Content Update="online-store-credential.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Views\Shared\Account\" />
   </ItemGroup>
 
   <ItemGroup>

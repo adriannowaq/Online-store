@@ -39,7 +39,7 @@
                         <form asp-action="Index" asp-controller="Shop" method="get" onchange="submit()">
                             @foreach (var item in Context.GetQueryParameters())
                             {
-                                @if (!item.Key.Equals("order"))
+                                @if (!item.Key.Equals("order") && !item.Key.Equals("page"))
                                 {
                                     <input type="text" name="@item.Key" value="@item.Value" hidden />
                                 }

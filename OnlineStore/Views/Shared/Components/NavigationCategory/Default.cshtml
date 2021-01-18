@@ -8,9 +8,17 @@
         <span>Kategorie</span>
     </div>
     <ul class="no-dots">
+        <li class="@(categoryFromController == 0 ? "active-category" : "")">
+            <a href="@Url.Action(nameof(ShopController.Index), 
+                        (nameof(ShopController).RemoveController()))">Wszystko</a>
+        </li>
         @foreach (var category in Model)
         {
-            <li class="@(categoryFromController == category.Id ? "active-category" : "")"><a href="@Url.Action( "Index", "Shop", new { category=category.Id})">@category.Name</a></li>
+            <li class="@(categoryFromController == category.Id ? "active-category" : "")">
+                <a href="@Url.Action(nameof(ShopController.Index),
+                            (nameof(ShopController).RemoveController()), 
+                            new { category = category.Id})">@category.Name</a>
+            </li>
         }
     </ul>
 </div>

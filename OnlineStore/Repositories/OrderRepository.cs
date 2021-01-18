@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OnlineStore.Data;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -47,6 +48,24 @@ namespace OnlineStore.Repositories
         public Task<bool> CartIdExistsInOrdersAsync(int cartId)
         {
             return dbContext.Orders.Where(o => o.CartId == cartId).AnyAsync();
+        }
+
+        public Task<List<Order>> GetOrderListWithProductsAsync(int userId, int page, int pageSize)
+        {
+            return dbContext.Orders
+                .Where(o => o.UserId == userId)
+                .OrderByDescending(o => o.Date)
+                .Include(o => o.OrderProducts)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+        }
+
+        public Task<int> CountOrdersAsync(int userId)
+        {
+            return dbContext.Orders
+                .Where(o => o.UserId == userId)
+                .CountAsync();
         }
     }
 }
