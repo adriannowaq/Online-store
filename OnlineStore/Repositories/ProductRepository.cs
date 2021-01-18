@@ -160,9 +160,15 @@ namespace OnlineStore.Repositories
             return dbContext.Products.Where(p => p.Id == id).FirstOrDefaultAsync();
         }
 
-        public Task<List<Product>> GetMostPopularProductsAsync()
+        public async Task<List<Product>> GetMostPopularProductsAsync()
         {
-            return dbContext.Products.Take(8).ToListAsync();
+            var productsIds = await (from p in dbContext.Products
+                              join o in dbContext.OrdersProducts on p.Id equals o.ProductId
+                              group o by o.ProductId into g
+                              orderby g.Count() descending
+                              select g.Key).Take(8).ToListAsync();
+
+            return await dbContext.Products.Where(p => productsIds.Contains(p.Id)).ToListAsync();
         }
     }
 }
