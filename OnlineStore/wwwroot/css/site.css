@@ -133,7 +133,7 @@ header {
     text-transform: uppercase;
     font-weight: bold;
     border-radius: 5px;
-    box-shadow: 0 0 1em rgba(0,0,0,0.5);
+    box-shadow: 0 0 1em rgba(0,0,0,0.2);
 }
 
 #search-bar:focus {
@@ -161,6 +161,9 @@ header {
     margin-left: -15px;
     padding: 0;
     border-radius: 0;
+}
+.pagination-orders {
+    margin-left:15px;
 }
 
 .page-item:first-child .page-link, .page-item:last-child .page-link {

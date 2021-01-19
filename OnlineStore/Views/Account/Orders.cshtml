@@ -33,7 +33,9 @@
                 {
                     @await Html.PartialAsync("Account/OrderedItems", item)
                 }
+            <div class="pagination-orders">
                 @Html.PagedListPager(Model, page => Url.Action("Orders", new { page }), Bootstrap4PagedListRenderOptions.ClassicPlusFirstAndLast)
+            </div>
             </div>
         }
 
