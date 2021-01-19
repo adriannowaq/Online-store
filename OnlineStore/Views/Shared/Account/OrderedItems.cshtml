@@ -42,7 +42,7 @@
                                     <td scope="col"><strong>@(value.index + 1)</strong></td>
                                     <td><a href="@Url.Action(nameof(ShopController.Details),
                                                     nameof(ShopController).RemoveController(),
-                                                    new { value.item.Id })">@value.item.Name</a></td>
+                                                    new { id = value.item.ProductId })">@value.item.Name</a></td>
                                     <td>@value.item.Count</td>
                                     <td>@value.item.Price.ToString("N") zł</td>
                                     <td>@((value.item.Price * value.item.Count).ToString("N")) zł</td>
