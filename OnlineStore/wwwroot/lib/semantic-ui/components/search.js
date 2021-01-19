@@ -1377,8 +1377,7 @@ $.fn.search.settings = {
         // message type
         if(type == 'empty') {
           html += ''
-            + '<div class="header">No Results</div class="header">'
-            + '<div class="description">' + message + '</div class="description">'
+              + '<div class="header">' + message + '</div class="header">'
           ;
         }
         else {

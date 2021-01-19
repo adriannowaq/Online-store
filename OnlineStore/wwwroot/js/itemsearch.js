@@ -9,6 +9,9 @@
                 title: "name",
                 url: "url"
             },
+            error: {
+                noResults: 'Brak rezulatatów.',
+            },
             minCharacters: 2
         });
 });

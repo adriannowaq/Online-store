@@ -78,5 +78,11 @@
     "inputFiles": [
       "wwwroot/js/Admin/EditProduct.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/lib/semantic-ui/components/search.min.js",
+    "inputFiles": [
+      "wwwroot/lib/semantic-ui/components/search.js"
+    ]
   }
 ]
