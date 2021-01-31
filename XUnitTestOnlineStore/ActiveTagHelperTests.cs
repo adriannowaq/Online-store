@@ -14,9 +14,9 @@ namespace XUnitTestOnlineStore
     {
         [Theory]
         [ClassData(typeof(ActiveTagHelperTestsData))]
-        public void Is_Adding_Active_Class_Properly(ActiveTagHelperTestModel testModel)
+        public void Process_ShouldAddActiveClassesProperly(ActiveTagHelperTestModel testModel)
         {
-            //arrange
+            //Arrange
             var activeTagHelper = new ActiveTagHelper()
             {
                 Controllers = testModel.TagControllers,
@@ -44,10 +44,10 @@ namespace XUnitTestOnlineStore
                 }),
                 (cache, encoder) => Task.FromResult(tagHelperContent.Object));
 
-            //act
+            //Act
             activeTagHelper.Process(tagHelperContext, tagHelperOutput);
 
-            //assert
+            //Assert
             tagHelperOutput.Attributes.TryGetAttribute("class", out var attribute);
             Assert.Equal(testModel.ExpectedClassAttributes, attribute.Value);
         }

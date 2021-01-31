@@ -95,9 +95,12 @@ namespace OnlineStore.Controllers
             {
                 var logged = await accountRepository
                     .SignInAsync(loginDetails.Email, loginDetails.Password);
+
                 if (logged)
-                    return RedirectToAction(nameof(HomeController.Index), 
+                {
+                    return RedirectToAction(nameof(HomeController.Index),
                         nameof(HomeController).RemoveController());
+                }
             }
             ModelState.AddModelError("", "Nieprawidłowy email lub hasło.");
             return View();

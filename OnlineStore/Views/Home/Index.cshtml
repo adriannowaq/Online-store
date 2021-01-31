@@ -62,7 +62,7 @@
                 {
                         <div class="carousel-item @(i==0?"active":"")">
                             <div class="row text-center">
-                                @if (Model.Reviews==null)
+                                @if (Model.Reviews.Count == 0)
                                 {
                                 <div class="col-12 review-div">
                                     <h5 class="text-center font-weight-bold my-2">Brak opinii do wyświetlenia</h5>
@@ -70,31 +70,30 @@
                                 }
                                 else
                                 {
-                                    @for (int j = 0; j < 3; j++)
+                                    @for (int j = 0; j < (Model.Reviews.Count >= 3 ? 3 : Model.Reviews.Count); j++)
                                     {
                                         <div class="col-4 review-div">
                                             <div class="review-product mt-2">
-                                                <a href="@Url.Action("Details", "Shop",  new { Id=Model.Reviews[counter].ProductId })">@Model.Reviews[counter].Product.Name</a>
+                                                <a href="@Url.Action("Details", "Shop",  new { Id=Model.Reviews[j].ProductId })">@Model.Reviews[j].Product.Name</a>
                                             </div>
 
-                                            @for (int k = 1; k <= Model.Reviews[counter].Rate; k++)
+                                            @for (int k = 1; k <= Model.Reviews[j].Rate; k++)
                                             {
                                                 <i class="fas fa-star star-color"></i>
                                             }
-                                            @for (int k = Model.Reviews[counter].Rate; k < 5; k++)
+                                            @for (int k = Model.Reviews[j].Rate; k < 5; k++)
                                             {
                                                 <i class="far fa-star empty-star-color"></i>
                                             }
                                             <div class="my-2">
                                                 <blockquote class="blockquote">
                                                     <p class="review-comment mt2-">
-                                                        <strong>@Model.Reviews[counter].AuthorName</strong>: @Model.Reviews[counter].Comment
+                                                        <strong>@Model.Reviews[j].AuthorName</strong>: @Model.Reviews[j].Comment
                                                     </p>
 
                                                 </blockquote>
                                             </div>
                                         </div>
-                                        counter++;
                                     }
                                 }
 

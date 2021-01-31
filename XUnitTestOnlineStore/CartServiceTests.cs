@@ -15,6 +15,7 @@ namespace XUnitTestOnlineStore
         private readonly ICartService cartServiceTests;
         private readonly Mock<IHttpContextAccessor> httpContextAccessorMock;
         private readonly Mock<ICartRepository> cartRepositoryMock;
+        private readonly string cookieName = "ShopCart";
 
         public CartServiceTests()
         {
@@ -29,7 +30,7 @@ namespace XUnitTestOnlineStore
         {
             //Arrange
             var token = "secrettoken123";
-            var cookie = MockCookieCollection.RequestCookieCollection("ShopCart", token);
+            var cookie = MockCookieCollection.RequestCookieCollection(cookieName, token);
 
             cartRepositoryMock.Setup(c => c.FindByTokenAsync(token)).Returns(Task.FromResult(new Cart()));
             httpContextAccessorMock.Setup(s => s.HttpContext.Request.Cookies).Returns(cookie);
@@ -39,9 +40,12 @@ namespace XUnitTestOnlineStore
 
             //Assert
             cartRepositoryMock.Verify(c => c.FindByTokenAsync(token), Times.Once);
-            cartRepositoryMock.Verify(c => c.CreateCartAsync(), Times.Never);
-            httpContextAccessorMock.Verify(h =>
-                h.HttpContext.Response.Cookies.Append("ShopCart", token), Times.Never);
+            httpContextAccessorMock.Verify(h => 
+                h.HttpContext.Request.Cookies, Times.Exactly(2));
+
+            cartRepositoryMock.VerifyNoOtherCalls();
+            httpContextAccessorMock.VerifyNoOtherCalls();
+
             Assert.NotNull(result);
         }
 
@@ -52,7 +56,8 @@ namespace XUnitTestOnlineStore
             var token = "secrettoken123";
             var cookie = MockCookieCollection.RequestCookieCollection(null, null);
 
-            cartRepositoryMock.Setup(c => c.CreateCartAsync()).Returns(Task.FromResult(new Cart(){ Token = token }));
+            cartRepositoryMock.Setup(c => c.CreateCartAsync())
+                .Returns(Task.FromResult(new Cart(){ Token = token }));
             httpContextAccessorMock.Setup(s => s.HttpContext.Request.Cookies).Returns(cookie);
             httpContextAccessorMock.Setup(s => 
                 s.HttpContext.Response.Cookies.Append(It.IsAny<string>(), It.IsAny<string>()));
@@ -61,10 +66,14 @@ namespace XUnitTestOnlineStore
             var result = await cartServiceTests.GetCartAsync();
 
             //Assert
-            cartRepositoryMock.Verify(c => c.FindByTokenAsync(It.IsAny<string>()), Times.Never);
             cartRepositoryMock.Verify(c => c.CreateCartAsync(), Times.Once);
             httpContextAccessorMock.Verify(h =>
-                h.HttpContext.Response.Cookies.Append("ShopCart", token), Times.Once);
+                h.HttpContext.Response.Cookies.Append(cookieName, token), Times.Once);
+            httpContextAccessorMock.Verify(h =>
+                h.HttpContext.Request.Cookies, Times.Once);
+
+            cartRepositoryMock.VerifyNoOtherCalls();
+            httpContextAccessorMock.VerifyNoOtherCalls();
 
             Assert.NotNull(result);
         }
